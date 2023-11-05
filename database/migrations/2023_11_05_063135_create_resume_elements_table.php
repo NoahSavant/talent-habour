@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('resume_elements', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->nullable();
+            $table->integer('type')->nullable();
             $table->string('content')->nullable();
-            $table->string('title')->nullable();
-            $table->integer('type');
-            $table->integer('content_type');
             $table->string('image_url')->nullable();
+            $table->bigInteger('resume_form_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('resume_form_id')->references('id')->on('resume_forms');
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('resume_elements');
     }
 };

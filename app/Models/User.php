@@ -17,7 +17,8 @@ class User extends Authenticatable implements JWTSubject
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'role',
@@ -44,7 +45,7 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function account_verify(): HasOne
+    public function accountVerify(): HasOne
     {
         return $this->hasOne(AccountVerify::class);
     }
@@ -52,5 +53,10 @@ class User extends Authenticatable implements JWTSubject
     public function profiles(): HasMany
     {
         return $this->hasMany(Profile::class);
+    }
+
+    public function fullname(): string 
+    {
+        return $this->firstname .' '. $this->lastname;
     }
 }

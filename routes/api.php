@@ -24,7 +24,6 @@ Route::get('/unauthenticated', [AuthenController::class, 'throwAuthenError'])->n
 Route::get('/unauthorized', [AuthenController::class, 'throwAuthorError'])->name('auth.authorError');
 Route::post('/send-verify', [AuthenController::class, 'sendVerify'])->name('sendVerify');
 Route::post('/active-account', [AuthenController::class, 'activeAccount'])->name('activeAccount');
-Route::post('/users/{user_id}/profiles', [ProfileController::class, 'index'])->name('getProfilesOfUser');
 
 Route::middleware('auth:api')->group(function() {
     Route::middleware('author:' . UserRole::ADMIN)->group(function () {
@@ -44,6 +43,7 @@ Route::middleware('auth:api')->group(function() {
 
     Route::controller(ProfileController::class)->group(function () {
         Route::name('auth.')->group(function () {
+            Route::get('/profiles', 'index')->name('index');
             Route::post('/profiles/create', 'store')->name('store');
             Route::put('/profiles/{profile_id}', 'update')->name('update');
             Route::delete('/profiles/{profile_id}', 'destroy')->name('destroy');

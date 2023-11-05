@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('applications', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->nullable();
+            $table->string('contact')->nullable();
+            $table->string('description')->nullable();
+            $table->string('pdf_url')->nullable();
             $table->string('content')->nullable();
-            $table->string('title')->nullable();
-            $table->integer('type');
-            $table->integer('content_type');
-            $table->string('image_url')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
@@ -31,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('applications');
     }
 };
