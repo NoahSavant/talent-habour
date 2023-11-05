@@ -6,14 +6,31 @@ use App\Constants\AuthenConstant\StatusResponse;
 use App\Constants\UserConstant\UserRole;
 use App\Constants\UserConstant\UserStatus;
 use App\Constants\UserConstant\UserVerifyTime;
+use App\Jobs\SendMailQueue;
 use App\Models\AccountVerify;
+use App\Models\Profile;
 use App\Models\User;
+use App\Services\ModelServices\AccountVerifyService;
+use App\Services\ModelServices\ProfileService;
+use App\Services\ModelServices\UserService;
 use DateInterval;
 use DateTime;
 use Hash;
 
 class AuthenService
 {
+    protected $userService;
+
+    protected $profileService;
+
+    protected $accountVerifyService;
+
+    public function __construct(UserService $userService, ProfileService $profileService, AccountVerifyService $accountVerifyService) {
+        $this->userService = $userService;
+        $this->profileService = $profileService;
+        $this->accountVerifyService = $accountVerifyService;
+    }
+
     public function login($input) {
        
         if (!$token = auth()->attempt($input)) {
@@ -25,10 +42,15 @@ class AuthenService
 
     public function signup($input)
     {
+        if ($this->userService->isEmailExist($input['email'])) {
+            return response()->json([
+                'message' => 'This email has been used',
+            ], StatusResponse::ERROR);
+        }
+
         $data = array_merge(
             $input,
             ['password' => Hash::make($input['password'])],
-            ['role' => UserRole::OWNER],
             ['status' => UserStatus::DEACTIVE]
         );
 
@@ -45,11 +67,16 @@ class AuthenService
             $data
         );
 
-        AccountVerify::create([
+        $this->accountVerifyService->create([
             'user_id'=> $user->id
         ]);
 
         $this->createVerify($user->email);
+
+        $this->profileService->setUpProfile($user);
+
+        SendMailQueue::dispatch($user);
+
         return $user;
     }
 
@@ -69,7 +96,7 @@ class AuthenService
         $overDateTime = clone $currentDateTime;
         $overDateTime->add(new DateInterval(UserVerifyTime::ACTIVE_TIME));
 
-        $verify = AccountVerify::withTrashed()->where('user_id', $user->id)->first();
+        $verify = $user->accountVerify;
         $verify->verify_code = $this->generateEncodedString($currentDateTime->format('Y-m-d H:i:s'), $overDateTime->format('Y-m-d H:i:s'), json_encode($user));
         $verify->overtimed_at = $overDateTime->format('Y-m-d H:i:s');
         $verify->deleted_at = null;
@@ -158,7 +185,7 @@ class AuthenService
         }
 
         $user->status = UserStatus::ACTIVE;
-        $user->account_verify->delete();
+        $user->accountVerify->delete();
         $user->save();
 
         return response()->json([
@@ -180,7 +207,7 @@ class AuthenService
         }
 
         $user->password = bcrypt($newPassword);
-        $user->account_verify->delete();
+        $user->accountVerify->delete();
         $user->save();
 
         return response()->json([
@@ -196,7 +223,7 @@ class AuthenService
             ], StatusResponse::ERROR);
         }
 
-        $accountVerify = $user->account_verify;
+        $accountVerify = $user->accountVerify;
 
         if (!$accountVerify or $accountVerify->overtimed_at < now() or $accountVerify->verify_code != $verify_code) {
             return response()->json([

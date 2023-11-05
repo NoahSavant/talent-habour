@@ -13,9 +13,9 @@ class ProfileController extends Controller
     public function __construct(ProfileService $profileService) {
         $this->profileService = $profileService;
     }
-    public function index($userId)
+    public function index()
     {
-        return $this->profileService->getProfilesOfUser($userId);
+        return $this->profileService->getProfiles();
     }
 
     /**
