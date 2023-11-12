@@ -31,7 +31,7 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        return $this->profileService->createProfile($request->all());
+        return $this->profileService->createProfiles(auth()->user(), $request->all()['items']);
     }
 
     /**
@@ -53,16 +53,16 @@ class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        return $this->profileService->updateProfile($id, $request->all());
+        return $this->profileService->updateProfiles($request->all());
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        return $this->profileService->deleteProfile($id);
+        return $this->profileService->deleteProfiles($request->all());
     }
 }

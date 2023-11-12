@@ -32,6 +32,10 @@ class ProfileService extends BaseService
                 "image_url" => $profile['image_url'],
             ]);
         }
+
+        return response()->json([
+            'message' => 'Create profiles successfully',
+        ], StatusResponse::SUCCESS);
     }
 
     public function setUpProfile($user) {
@@ -62,22 +66,45 @@ class ProfileService extends BaseService
         $this->createProfiles($user, $profiles);
     }
 
-    public function updateProfile($id, $data) {
-        $profile = Profile::where('id', $id)->update($data);
-        if ($profile) {
-            return response()->json([
-                'message' => 'Update profile successfully',
-                'profile' => $profile
-            ], StatusResponse::SUCCESS);
+    public function updateProfiles($data) {
+        $items = $data['items'];
+        foreach($items as $item) {
+            if(!$this->isProfileOfUser(auth()->user()->id, $item['id'])) {
+                return response()->json([
+                    'message' => 'This user have not this profiles'
+                ], StatusResponse::ERROR);;
+            }
+        }
+
+        foreach ($items as $item) {
+            Profile::where('id', $item['id'])->update($item['data']);
         }
 
         return response()->json([
-            'message' => 'Update profile fail'
-        ], StatusResponse::ERROR);
+            'message' => 'Update profiles successfully',
+        ], StatusResponse::SUCCESS);
     }
 
-    public function deleteProfile($id) {
-        Profile::where('id', $id)->delete();
+    private function isProfileOfUser($userId, $profileId) {
+        $profile = Profile::where('id', $profileId)->where('user_id', $userId)->first();
+
+        if (!$profile) return false;
+        
+        return true;
+    }
+
+    public function deleteProfiles($data) {
+        $ids = $data['ids'];
+        foreach ($ids as $id) {
+            if (!$this->isProfileOfUser(auth()->user()->id, $id)) {
+                return response()->json([
+                    'message' => 'This user have not this profiles'
+                ], StatusResponse::ERROR);
+                ;
+            }
+        }
+
+        Profile::destroy($ids);
 
         return response()->json([
             'message' => 'Delete profile successfully',
