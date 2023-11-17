@@ -19,4 +19,21 @@ class UserService extends BaseService {
     {
         return User::where('email', $email)->where('status', UserStatus::ACTIVE)->exists();
     }
+
+    public function updateProfile($input)
+    {
+        $user = auth()->user();
+        $result = $user->update($this->getValue($input, [
+            'first_name',
+            'last_name',
+            'gender',
+            'date_of_birth',
+            'phonenumber',
+            'introduction',
+        ]));
+
+        if (!$result) return false;
+        
+        return $user;
+    }
 }

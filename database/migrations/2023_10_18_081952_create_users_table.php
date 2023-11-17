@@ -20,6 +20,10 @@ return new class extends Migration
             $table->integer('role');
             $table->string('image_url')->nullable();
             $table->integer('status')->nullable();
+            $table->integer('gender')->nullable();
+            $table->timestamp('date_of_birth')->nullable();
+            $table->string('phonenumber')->nullable();
+            $table->string('introduction', 500)->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

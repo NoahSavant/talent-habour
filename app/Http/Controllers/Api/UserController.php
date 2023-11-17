@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Constants\AuthenConstant\StatusResponse;
 use App\Http\Controllers\Controller;
 use App\Services\ModelServices\UserService;
 use Illuminate\Http\Request;
@@ -51,5 +52,17 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function updateProfile(Request $request) {
+        $result = $this->userService->updateProfile($request->all());
+
+        if ($result) {
+            return response()->json($result, StatusResponse::SUCCESS);
+        }
+
+        return response()->json([
+            'message' => 'Update profile fail'
+        ], StatusResponse::ERROR);
     }
 }

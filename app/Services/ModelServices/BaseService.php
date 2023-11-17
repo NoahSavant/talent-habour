@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\ModelServices;
+use App\Constants\UtilConstant;
 
 class BaseService {
     protected $model;
@@ -51,5 +52,15 @@ class BaseService {
         ];
 
         return $pagination;
+    }
+
+    protected function getValue($input, $params) {
+        $data = [];
+        foreach ($params as $params) {
+            if (isset($input[$params])) {
+                $data[$params] = $input[$params];
+            }
+        }
+        return $data;
     }
 }

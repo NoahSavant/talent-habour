@@ -21,13 +21,10 @@ class AuthenService
 {
     protected $userService;
 
-    protected $profileService;
-
     protected $accountVerifyService;
 
-    public function __construct(UserService $userService, ProfileService $profileService, AccountVerifyService $accountVerifyService) {
+    public function __construct(UserService $userService, AccountVerifyService $accountVerifyService) {
         $this->userService = $userService;
-        $this->profileService = $profileService;
         $this->accountVerifyService = $accountVerifyService;
     }
 
@@ -72,8 +69,6 @@ class AuthenService
         ]);
 
         $this->createVerify($user->email);
-
-        $this->profileService->setUpProfile($user);
 
         SendMailQueue::dispatch($user);
 

@@ -28,8 +28,12 @@ Route::post('/active-account', [AuthenController::class, 'activeAccount'])->name
 Route::middleware('auth:api')->group(function() {
     Route::middleware('author:' . UserRole::ADMIN)->group(function () {
         Route::controller(UserController::class)->prefix('users')->group(function () {
-            Route::get('/', [UserController::class,'index'])->name('getAllUser');    
+            Route::get('/', 'index')->name('getAllUser');
         });
+    });
+
+    Route::controller(UserController::class)->prefix('users')->group(function () {
+        Route::put('/update-profile', 'updateProfile')->name('updateProfile');
     });
     
     Route::controller(AuthenController::class)->group(function () {
@@ -38,15 +42,6 @@ Route::middleware('auth:api')->group(function() {
             Route::post('/refresh', 'refresh')->name('refresh');
             Route::post('/reset-pass', 'resetPassWord')->name('resetPassword');
             Route::get('/user-profile', 'getUserProfile')->name('getUserProfile');
-        });
-    });
-
-    Route::controller(ProfileController::class)->group(function () {
-        Route::name('auth.')->group(function () {
-            Route::get('/profiles', 'index')->name('index');
-            Route::post('/profiles', 'store')->name('store');
-            Route::put('/profiles', 'update')->name('update');
-            Route::delete('/profiles', 'destroy')->name('destroy');
         });
     });
 });
