@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('gender')->nullable();
-
+        Schema::create('files', function (Blueprint $table) {
+            $table->id();
+            $table->string('filename'); // Column to store the original file name
+            $table->string('path'); // Column to store the file path or URL
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -22,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('gender');
-        });
+        Schema::dropIfExists('files');
     }
 };

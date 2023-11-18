@@ -2,6 +2,7 @@
 
 use App\Constants\UserConstant\UserRole;
 use App\Http\Controllers\Api\AuthenController;
+use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -34,6 +35,10 @@ Route::middleware('auth:api')->group(function() {
 
     Route::controller(UserController::class)->prefix('users')->group(function () {
         Route::put('/update-profile', 'updateProfile')->name('updateProfile');
+    });
+
+    Route::controller(FileController::class)->group(function () {
+        Route::post('/upload', 'upload');
     });
     
     Route::controller(AuthenController::class)->group(function () {
