@@ -14,13 +14,23 @@ class FileController extends Controller
     {
         $file = $request->file('file');
 
-        $path = $file->store('public');
-        $url = Storage::url($path);
+        // Get the original extension of the file
+        $extension = $file->getClientOriginalExtension();
 
+        // Generate a unique filename to avoid conflicts
+        $fileName = uniqid() . '.' . $extension;
+
+        // Store the file with the generated filename and the 'public' disk
+        $path = $file->storeAs('public', $fileName);
+
+        // Create a record in the database with the original filename and the stored path
         $newFile = File::create([
             'filename' => $file->getClientOriginalName(),
-            'path' => $url,
+            'path' => $path,
         ]);
+
+        // Generate the URL based on the stored path
+        $url = env('APP_URL') . Storage::url($path);
 
         return response()->json(['url' => $url]);
     }
