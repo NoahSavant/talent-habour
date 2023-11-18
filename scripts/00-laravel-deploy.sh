@@ -9,7 +9,7 @@ echo 'Caching routes...'
 php artisan route:cache
  
 echo 'Running migrations...'
-php artisan migrate:refresh --force
+php artisan migrate --force
 
 echo 'Running storage...'
 php artisan storage:link
