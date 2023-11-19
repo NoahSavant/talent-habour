@@ -4,6 +4,7 @@ use App\Constants\UserConstant\UserRole;
 use App\Http\Controllers\Api\AuthenController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\RecruitmentPostController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,7 @@ Route::get('//unauthenticated', [AuthenController::class, 'throwAuthenError'])->
 Route::get('/unauthorized', [AuthenController::class, 'throwAuthorError'])->name('auth.authorError');
 Route::post('/send-verify', [AuthenController::class, 'sendVerify'])->name('sendVerify');
 Route::post('/active-account', [AuthenController::class, 'activeAccount'])->name('activeAccount');
+Route::get('/recruitment-posts', [RecruitmentPostController::class, 'index'])->name('index');
 
 Route::middleware('auth:api')->group(function() {
     Route::middleware('author:' . UserRole::ADMIN)->group(function () {
@@ -35,6 +37,18 @@ Route::middleware('auth:api')->group(function() {
 
     Route::controller(UserController::class)->prefix('users')->group(function () {
         Route::put('/update-profile', 'updateProfile')->name('updateProfile');
+    });
+
+    Route::controller(RecruitmentPostController::class)->prefix('recruitment-posts')->group(function () {
+        Route::post('', 'store')->name('store');
+        Route::put('/{id}', 'update')->name('update');
+    });
+
+    Route::middleware('author:' . UserRole::RECRUITER)->group(function () {
+        Route::controller(RecruitmentPostController::class)->prefix('recruitment-posts')->group(function () {
+            Route::post('', 'store')->name('store');
+            Route::put('/{id}', 'update')->name('update');
+        });
     });
 
     Route::controller(FileController::class)->group(function () {

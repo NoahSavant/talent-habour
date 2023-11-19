@@ -55,11 +55,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(AccountVerify::class);
     }
 
-    public function profiles(): HasMany
-    {
-        return $this->hasMany(Profile::class);
-    }
-
     public function fullname(): string 
     {
         return $this->firstname .' '. $this->lastname;

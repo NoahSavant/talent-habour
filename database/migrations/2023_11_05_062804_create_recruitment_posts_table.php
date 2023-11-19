@@ -14,10 +14,16 @@ return new class extends Migration
         Schema::create('recruitment_posts', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->nullable();
-            $table->integer('status')->nullable();
-            $table->timestamp('posted_at')->nullable();
-            $table->string('image_url')->nullable();
-            $table->string('description')->nullable();
+            $table->string('role', 100)->nullable(); 
+            $table->string('title', 100)->nullable(); 
+            $table->string('address', 100)->nullable(); 
+            $table->string('job_type', 100)->nullable(); 
+            $table->string('salary', 100)->nullable(); 
+            $table->text('description')->nullable(); 
+            $table->text('job_requirements')->nullable(); 
+            $table->string('educational_requirements', 100)->nullable(); 
+            $table->string('experience_requirements', 100)->nullable();
+            $table->timestamp('expired_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
