@@ -53,7 +53,6 @@ class UserController extends Controller
     }
 
     public function updateProfile(Request $request) {
-        return (123);
         $result = $this->userService->updateProfile($request->all());
 
         if ($result) {
