@@ -14,9 +14,7 @@ class UserController extends Controller
     public function __construct(UserService $userService) {
         $this->userService = $userService;
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         return $this->userService->getAllUser();
@@ -55,6 +53,7 @@ class UserController extends Controller
     }
 
     public function updateProfile(Request $request) {
+        return (123);
         $result = $this->userService->updateProfile($request->all());
 
         if ($result) {
