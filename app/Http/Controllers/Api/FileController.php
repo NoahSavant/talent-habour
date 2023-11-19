@@ -11,7 +11,6 @@ class FileController extends Controller
 {
     public function upload(Request $request)
     {
-        return 123456;
         $result = Cloudinary::upload($request->file('file')->getRealPath(), [
             'folder' => 'files'
         ]);

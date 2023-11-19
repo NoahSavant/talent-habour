@@ -12,8 +12,9 @@ echo 'Running migrations...'
 php artisan migrate --force
 
 echo 'Running storage...'
-php artisan storage:link
 php artisan cache:clear
+
+php artisan storage:link
 
 echo 'Running queue...'
 php artisan queue:restart
