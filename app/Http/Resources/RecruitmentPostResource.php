@@ -13,7 +13,7 @@ class RecruitmentPostResource extends JsonResource
             'id' => $this->id,
             'user' => [
                 'id' => $this->user->id,
-                'fullname' => $this->user->fullname,
+                'fullname' => $this->user->fullname(),
                 'image_url' => $this->user->image_url,
                 'email' => $this->user->email
             ],

@@ -44,4 +44,16 @@ class RecruitmentPostController extends Controller
             'message' => 'Update recruitment post fail',
         ], StatusResponse::ERROR);
     }
+
+    public function show(string $id) {
+        $result = $this->recruitmentPostService->show($id);
+
+        if ($result) {
+            return response()->json($result, StatusResponse::SUCCESS);
+        }
+
+        return response()->json([
+            'message' => 'Get recruitment post fail',
+        ], StatusResponse::ERROR);
+    }
 }
