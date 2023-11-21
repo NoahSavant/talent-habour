@@ -51,6 +51,7 @@ Route::middleware('auth:api')->group(function() {
         Route::controller(RecruitmentPostController::class)->prefix('recruitment-posts')->group(function () {
             Route::post('', 'store')->name('store');
             Route::put('/{id}', 'update')->name('update');
+            Route::get('/personal/posts', 'getPersonalPost')->name('getPersonalPost');
         });
     });
 

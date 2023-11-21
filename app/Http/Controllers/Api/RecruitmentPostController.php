@@ -20,6 +20,11 @@ class RecruitmentPostController extends Controller
         return response()->json($this->recruitmentPostService->getRecruitmentPosts($request->all()), StatusResponse::SUCCESS);
     }
 
+    public function getPersonalPosts(Request $request)
+    {
+        return response()->json($this->recruitmentPostService->getPersonalRecruitmentPosts($request->all()), StatusResponse::SUCCESS);
+    }
+
     public function store(Request $request) {
         $result = $this->recruitmentPostService->store($request->all());
 
