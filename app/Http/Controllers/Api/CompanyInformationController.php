@@ -41,7 +41,7 @@ class CompanyInformationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         $result = $this->companyInformationService->update(auth()->user()->id, $request->all());
 
