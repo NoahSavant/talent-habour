@@ -13,7 +13,7 @@ class BaseService {
 
     public function update($id, $data)
     {
-        return $this->model->where('id', $id)->update($id, $data);
+        return $this->model->where('id', $id)->update($data);
     }
 
     public function delete($ids)
