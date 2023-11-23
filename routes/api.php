@@ -2,10 +2,12 @@
 
 use App\Constants\UserConstant\UserRole;
 use App\Http\Controllers\Api\AuthenController;
+use App\Http\Controllers\Api\CompanyInformationController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RecruitmentPostController;
 use App\Http\Controllers\Api\UserController;
+use App\Models\CompanyInformation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -52,6 +54,11 @@ Route::middleware('auth:api')->group(function() {
             Route::post('', 'store')->name('store');
             Route::put('/{id}', 'update')->name('update');
             Route::get('/personal/posts', 'getPersonalPosts')->name('getPersonalPosts');
+        });
+
+        Route::controller(CompanyInformationController::class)->prefix('company-informations')->group(function () {
+            Route::get('', 'show')->name('show');
+            Route::put('', 'update')->name('update');
         });
     });
 

@@ -11,6 +11,7 @@ use App\Models\AccountVerify;
 use App\Models\Profile;
 use App\Models\User;
 use App\Services\ModelServices\AccountVerifyService;
+use App\Services\ModelServices\CompanyInformationService;
 use App\Services\ModelServices\ProfileService;
 use App\Services\ModelServices\UserService;
 use DateInterval;
@@ -23,9 +24,12 @@ class AuthenService
 
     protected $accountVerifyService;
 
-    public function __construct(UserService $userService, AccountVerifyService $accountVerifyService) {
+    protected $companyInformationService;
+
+    public function __construct(UserService $userService, AccountVerifyService $accountVerifyService, CompanyInformationService $companyInformationService) {
         $this->userService = $userService;
         $this->accountVerifyService = $accountVerifyService;
+        $this->companyInformationService = $companyInformationService;
     }
 
     public function login($input) {
@@ -63,6 +67,10 @@ class AuthenService
         $user = User::create(
             $data
         );
+
+        if($user->role === UserRole::RECRUITER) {
+            $this->companyInformationService->create(['user_id', $user->id]);
+        }
 
         $this->accountVerifyService->create([
             'user_id'=> $user->id
