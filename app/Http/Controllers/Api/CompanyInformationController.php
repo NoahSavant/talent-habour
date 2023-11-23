@@ -61,4 +61,30 @@ class CompanyInformationController extends Controller
     {
         //
     }
+
+    public function getListCompanies(Request $request)
+    {
+        $result = $this->companyInformationService->getListCompanies($request->all());
+
+        if ($result) {
+            return response()->json($result, StatusResponse::SUCCESS);
+        }
+
+        return response()->json([
+            'message' => 'Get list companies fail',
+        ], StatusResponse::ERROR);
+    }
+
+    public function getCompany(string $id)
+    {
+        $result = $this->companyInformationService->getCompany($id);
+
+        if ($result) {
+            return response()->json($result, StatusResponse::SUCCESS);
+        }
+
+        return response()->json([
+            'message' => 'Get company fail',
+        ], StatusResponse::ERROR);
+    }
 }

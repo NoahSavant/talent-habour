@@ -33,6 +33,11 @@ Route::controller(RecruitmentPostController::class)->prefix('recruitment-posts')
     Route::get('', 'index')->name('index');
 });
 
+Route::controller(CompanyInformationController::class)->prefix('companies')->group(function () {
+    Route::get('/{id}', 'getCompany')->name('show');
+    Route::get('', 'getListCompanies')->name('index');
+});
+
 Route::middleware('auth:api')->group(function() {
     Route::middleware('author:' . UserRole::ADMIN)->group(function () {
         Route::controller(UserController::class)->prefix('users')->group(function () {
@@ -42,11 +47,6 @@ Route::middleware('auth:api')->group(function() {
 
     Route::controller(UserController::class)->prefix('users')->group(function () {
         Route::put('/update-profile', 'updateProfile')->name('updateProfile');
-    });
-
-    Route::controller(RecruitmentPostController::class)->prefix('recruitment-posts')->group(function () {
-        Route::post('', 'store')->name('store');
-        Route::put('/{id}', 'update')->name('update');
     });
 
     Route::middleware('author:' . UserRole::RECRUITER)->group(function () {

@@ -27,4 +27,19 @@ class CompanyInformation extends Model
         'description',
         'culture',
     ];
+
+    public function scpoeSearch($query, $search) {
+        if ($search === '')
+            return $query;
+        $keywords = explode(',', $search);
+        $query->where(function ($query) use ($keywords) {
+            foreach ($keywords as $keyword) {
+                $query->orWhere(function ($query) use ($keyword) {
+                    $query->where('name', 'LIKE', "%$keyword%")
+                        ->orWhere('address', 'LIKE', "%$keyword%")
+                        ->orWhere('address_main', 'LIKE', "%$keyword%");
+                });
+            }
+        });
+    }
 }
