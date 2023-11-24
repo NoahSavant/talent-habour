@@ -28,7 +28,7 @@ class CompanyInformation extends Model
         'culture',
     ];
 
-    public function scpoeSearch($query, $search) {
+    public function scopeSearch($query, $search) {
         if ($search === '')
             return $query;
         $keywords = explode(',', $search);
