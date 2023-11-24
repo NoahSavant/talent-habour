@@ -38,6 +38,13 @@ class RecruitmentPost extends Model
         }
     }
 
+    public function scopeCompaniesFillter($query, $companies)
+    {
+        if (count($companies) === 0)
+            return $query;
+        $query = $query->whereIn('user_id', $companies);
+    }
+
     public function scopeExperiencesFillter($query, $experiences)
     {
         if (count($experiences) === 0)
