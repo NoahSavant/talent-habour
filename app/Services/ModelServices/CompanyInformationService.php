@@ -23,6 +23,9 @@ class CompanyInformationService extends BaseService {
 
         if(!$company) return false;
 
-        return $company;
+        return [
+            'company' => $company,
+            'recruitment_posts' =>  $company->user->recrumentPosts
+        ];
     }
 }
