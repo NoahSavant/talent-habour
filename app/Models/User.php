@@ -65,8 +65,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(CompanyInformation::class);
     }
 
-    public function recrumentPosts(): HasMany
+    public function recruitmentPosts(): HasMany
     {
         return $this->hasMany(RecruitmentPost::class);
+    }
+
+    public function recruitmentPostsHiring(): HasMany 
+    {
+        return $this->hasMany(RecruitmentPost::class)->where('expired_at', '>', now());
     }
 }

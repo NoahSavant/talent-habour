@@ -25,7 +25,7 @@ class CompanyInformationService extends BaseService {
 
         return [
             'company' => $company,
-            'recruitment_posts' =>  $company->user->recrumentPosts
+            'recruitment_posts' =>  $company->user->recruitmentPosts
         ];
     }
 }
