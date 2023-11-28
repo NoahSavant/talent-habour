@@ -72,10 +72,19 @@ class RecruitmentPostService extends BaseService {
     }
 
     public function show($id) {
-        $result = $this->model->where('id', $id)->first();
+        $post = $this->model->where('id', $id)->first();
 
-        if(!$result) return false;
+        if(!$post) return false;
 
-        return $result;
+        return [
+            'user' => [
+                "id" => $post->user->id,
+                "first_name" => $post->user->first_name,
+                "last_name" => $post->user->last_name,
+                "image_url" => $post->user->image_url
+            ],
+            "post" => $post,
+            "company" => $post->user->companyInformation
+        ];
     }
 }
