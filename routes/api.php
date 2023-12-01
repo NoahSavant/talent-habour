@@ -1,11 +1,13 @@
 <?php
 
 use App\Constants\UserConstant\UserRole;
+use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\AuthenController;
 use App\Http\Controllers\Api\CompanyInformationController;
 use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RecruitmentPostController;
+use App\Http\Controllers\Api\ResumeController;
 use App\Http\Controllers\Api\UserController;
 use App\Models\CompanyInformation;
 use Illuminate\Http\Request;
@@ -49,11 +51,29 @@ Route::middleware('auth:api')->group(function() {
         Route::put('/update-profile', 'updateProfile')->name('updateProfile');
     });
 
+    Route::controller(ResumeController::class)->prefix('resumes')->group(function () {
+        Route::get('', 'index')->name('get');
+        Route::get('/{id}', 'show')->name('show');
+        Route::post('', 'store')->name('store');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('', 'delete')->name('delete');
+    });
+
+    Route::controller(ApplicationController::class)->prefix('applications')->group(function () {
+        Route::get('', 'index')->name('get');
+        Route::get('/posts/{id}', 'getByPost')->name('get');
+        Route::get('/{id}', 'show')->name('show');
+        Route::post('', 'store')->name('store');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('', 'delete')->name('delete');
+    });
+
     Route::middleware('author:' . UserRole::RECRUITER)->group(function () {
         Route::controller(RecruitmentPostController::class)->prefix('recruitment-posts')->group(function () {
             Route::post('', 'store')->name('store');
             Route::put('/{id}', 'update')->name('update');
             Route::get('/personal/posts', 'getPersonalPosts')->name('getPersonalPosts');
+            Route::delete('', 'delete')->name('delete');
         });
 
         Route::controller(CompanyInformationController::class)->prefix('company-informations')->group(function () {

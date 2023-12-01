@@ -14,9 +14,11 @@ class UserInformation extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $user = auth()->user()->toArray();
-        $user['enterprise'] = $this->enterprise->toArray();
-        unset($user['enterprise_id']);
-        return $user;
+        return [
+            'id' => $this->id,
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'image_url' => $this->image_url,
+        ];
     }
 }

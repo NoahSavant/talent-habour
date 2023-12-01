@@ -61,4 +61,19 @@ class RecruitmentPostController extends Controller
             'message' => 'Get recruitment post fail',
         ], StatusResponse::ERROR);
     }
+
+    public function delete(Request $request)
+    {
+        $result = $this->recruitmentPostService->delete($request->get('ids') ?? []);
+
+        if ($result) {
+            return response()->json([
+                'message' => 'Delete comapny information successfully'
+            ], StatusResponse::SUCCESS);
+        }
+
+        return response()->json([
+            'message' => 'Delete comapny information fail'
+        ], StatusResponse::ERROR);
+    }
 }

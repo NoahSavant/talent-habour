@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Constants\UserConstant\UserRole;
+use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -11,13 +13,7 @@ class RecruitmentPostResource extends JsonResource
     {
         $data = [
             'id' => $this->id,
-            'user' => [
-                'id' => $this->user->id,
-                'first_name' => $this->user->first_name,
-                'last_name' => $this->last_name,
-                'image_url' => $this->user->image_url,
-                'email' => $this->user->email
-            ],
+            'user' => new UserInformation($this->user),
             'role' => $this->role,
             'title' => $this->title,
             'address' => $this->address,
@@ -28,7 +24,8 @@ class RecruitmentPostResource extends JsonResource
             'educational_requirements' => $this->educational_requirements,
             'experience_requirements' => $this->experience_requirements,
             'expired_at' => $this->expired_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+            'applied' => Application::where('user_id', auth()->user()?->id)->where('recreuitment_post_id', $this->id)->exists(),
         ];
 
         return $data;

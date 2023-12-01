@@ -51,7 +51,6 @@ class RecruitmentPostService extends BaseService {
         $date = $input['date'] ?? null;
         $search = $input['$search'] ?? '';
         $companies = $input['companies'] ?? [];
-
         $query = $this->model->experiencesFillter($experiences)->companiesFillter($companies)->typesFillter($types)->updatedAfter($date)->search($search);
         $data = $this->getAll($input, $query);
         $data['items'] = RecruitmentPostResource::collection($data['items']);
