@@ -16,12 +16,7 @@ class CompanyResource extends JsonResource
             'address_main' => $this->address_main,
             'field' => $this->field,
             'number_of_recruitment_post_hiring' => count($this->user->recruitmentPostsHiring),
-            'user' => [
-                'id' => $this->user->id,
-                'firstname' => $this->user->firstname,
-                'lastname' => $this->user->lastname,
-                'image_url' => $this->user->image_url
-            ]
+            'user' => new UserInformation($this->user)
         ];
     }
 }

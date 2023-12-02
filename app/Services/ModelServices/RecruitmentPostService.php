@@ -51,7 +51,11 @@ class RecruitmentPostService extends BaseService {
         $date = $input['date'] ?? null;
         $search = $input['$search'] ?? '';
         $companies = $input['companies'] ?? [];
-        $query = $this->model->experiencesFillter($experiences)->companiesFillter($companies)->typesFillter($types)->updatedAfter($date)->search($search);
+
+        $user = auth()->user();
+        $query = $this->model->with(['applications' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }, 'user'])->experiencesFillter($experiences)->companiesFillter($companies)->typesFillter($types)->updatedAfter($date)->search($search);
         $data = $this->getAll($input, $query);
         $data['items'] = RecruitmentPostResource::collection($data['items']);
         return $data;
@@ -63,8 +67,14 @@ class RecruitmentPostService extends BaseService {
         $experiences = $input["experiences"] ?? [];
         $date = $input['date'] ?? null;
         $search = $input['search'] ?? '';
-
-        $query = $this->model->where('user_id', auth()->user()->id)->experiencesFillter($experiences)->typesFillter($types)->updatedAfter($date)->search($search);
+        
+        $user = auth()->user();
+        $query = $this->model->with([
+            'applications' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            },
+            'user'
+        ])->where('user_id', auth()->user()->id)->experiencesFillter($experiences)->typesFillter($types)->updatedAfter($date)->search($search);
         $data = $this->getAll($input, $query);
         $data['items'] = RecruitmentPostResource::collection($data['items']);
         return $data;

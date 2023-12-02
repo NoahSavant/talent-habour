@@ -11,6 +11,10 @@ class RecruitmentPostResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $applied = $this->applications->first(function ($application) {
+            return $application->recreuitment_post_id === $this->id;
+        });
+
         $data = [
             'id' => $this->id,
             'user' => new UserInformation($this->user),
@@ -25,7 +29,7 @@ class RecruitmentPostResource extends JsonResource
             'experience_requirements' => $this->experience_requirements,
             'expired_at' => $this->expired_at,
             'updated_at' => $this->updated_at,
-            'applied' => Application::where('user_id', auth()->user()?->id)->where('recreuitment_post_id', $this->id)->exists(),
+            'applied' => $applied === null ? false : true,
         ];
 
         return $data;
