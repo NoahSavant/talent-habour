@@ -36,6 +36,11 @@ class RecruitmentPost extends Model
         return $this->hasMany(Application::class);
     }
 
+    public function allApplications()
+    {
+        return Application::all();
+    }
+
     public function scopeTypesFillter($query, $types) {
         if(count($types) === 0) return $query;
         $query = $query->where('id', '<', 0);
