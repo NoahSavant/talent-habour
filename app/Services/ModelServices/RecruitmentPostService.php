@@ -50,7 +50,7 @@ class RecruitmentPostService extends BaseService {
         $types = $input["types"] ?? [];
         $experiences = $input["experiences"] ?? [];
         $date = $input['date'] ?? null;
-        $search = $input['$search'] ?? '';
+        $search = $input['search'] ?? '';
         $companies = $input['companies'] ?? [];
 
         $user = auth()->user();
