@@ -18,6 +18,7 @@ class RecruitmentPostResource extends JsonResource
         $data = [
             'id' => $this->id,
             'user' => new UserInformation($this->user),
+            'company' => $this->user->companyInformation,
             'role' => $this->role,
             'title' => $this->title,
             'address' => $this->address,
