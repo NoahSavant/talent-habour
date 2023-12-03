@@ -12,7 +12,7 @@ class RecruitmentPostForEmployeeResource extends JsonResource
     public function toArray(Request $request): array
     {
         $applied = $this->applications->first(function ($application) {
-            return ($application->recreuitment_post_id === $this->id and $application->user_id === auth()->user()->id);
+            return ($application->recruitment_post_id === $this->id and $application->user_id === auth()->user()->id);
         });
 
         $data = [
@@ -30,7 +30,7 @@ class RecruitmentPostForEmployeeResource extends JsonResource
             'expired_at' => $this->expired_at,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
-            'applied' => $this->applications,
+            'applied' => $applied === null ? false : true,
         ];
 
         return $data;

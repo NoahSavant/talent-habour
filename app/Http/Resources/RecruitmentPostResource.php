@@ -12,7 +12,7 @@ class RecruitmentPostResource extends JsonResource
     public function toArray(Request $request): array
     {
         $applied = $this->applications->first(function ($application) {
-            return $application->recreuitment_post_id === $this->id;
+            return $application->recruitment_post_id === $this->id;
         });
 
         $data = [
