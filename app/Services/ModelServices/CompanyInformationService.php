@@ -13,7 +13,7 @@ class CompanyInformationService extends BaseService {
         $search = $input['$search'] ?? '';
 
         $query = $this->model->with(['user' => [
-            'recruitmentPostHiring'
+            'recruitmentPostsHiring'
         ]])->search($search);
         $data = $this->getAll($input, $query);
         $data['items'] = CompanyResource::collection($data['items']);
