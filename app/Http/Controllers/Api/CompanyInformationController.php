@@ -6,6 +6,7 @@ use App\Constants\AuthenConstant\StatusResponse;
 use App\Constants\UserConstant\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\CompanyInformation;
+use App\Models\User;
 use App\Services\ModelServices\CompanyInformationService;
 use App\Services\ModelServices\UserService;
 use Illuminate\Http\Request;
@@ -43,7 +44,7 @@ class CompanyInformationController extends Controller
      */
     public function update(Request $request)
     {
-        $result = $this->companyInformationService->update(auth()->user()->id, $request->all());
+        $result = $this->companyInformationService->update(auth()->user()->companyInformation->id, $request->all());
 
         if ($result) {
             return response()->json($result, StatusResponse::SUCCESS);
@@ -77,7 +78,8 @@ class CompanyInformationController extends Controller
 
     public function getCompany(string $id)
     {
-        $result = $this->companyInformationService->getCompany($id);
+        $user = User::where('id', $id)->first();
+        $result = $this->companyInformationService->getCompany($user->companyInformation->id);
 
         if ($result) {
             return response()->json($result, StatusResponse::SUCCESS);
