@@ -78,8 +78,7 @@ class CompanyInformationController extends Controller
 
     public function getCompany(string $id)
     {
-        $user = User::where('id', $id)->first();
-        $result = $this->companyInformationService->getCompany($user->companyInformation->id);
+        $result = $this->companyInformationService->getCompany($id);
 
         if ($result) {
             return response()->json($result, StatusResponse::SUCCESS);
