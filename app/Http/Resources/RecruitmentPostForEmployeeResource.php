@@ -30,7 +30,7 @@ class RecruitmentPostForEmployeeResource extends JsonResource
             'expired_at' => $this->expired_at,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
-            'applied' => $applied === null ? false : true,
+            'applied' => $this->applications,
         ];
 
         return $data;
