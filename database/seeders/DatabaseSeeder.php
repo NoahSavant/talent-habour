@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Constants\UserConstant\UserRole;
 use App\Models\CompanyInformation;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -21,7 +22,7 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $users = User::all();
+        $users = User::where('role', UserRole::RECRUITER)->get();
 
         foreach($users as $user) {
             CompanyInformation::create([

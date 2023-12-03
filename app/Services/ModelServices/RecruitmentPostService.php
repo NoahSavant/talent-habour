@@ -70,7 +70,7 @@ class RecruitmentPostService extends BaseService {
         
         $user = auth()->user();
         $query = $this->model->with([
-            'allApplications' => function ($query) use ($user) {
+            'applications' => function ($query) use ($user) {
                 $query->where('user_id', $user?->id);
             },
             'user'
