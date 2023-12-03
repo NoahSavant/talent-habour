@@ -3,6 +3,7 @@
 namespace App\Services\ModelServices;
 use App\Constants\UserConstant\UserRole;
 use App\Constants\UserConstant\UserStatus;
+use App\Http\Resources\RecruitmentPostForEmployeeResource;
 use App\Http\Resources\RecruitmentPostResource;
 use App\Models\RecruitmentPost;
 
@@ -92,7 +93,7 @@ class RecruitmentPostService extends BaseService {
                 "last_name" => $post->user->last_name,
                 "image_url" => $post->user->image_url
             ],
-            "post" => new RecruitmentPostResource($post),
+            "post" => new RecruitmentPostForEmployeeResource($post),
             "company" => $post->user->companyInformation
         ];
     }

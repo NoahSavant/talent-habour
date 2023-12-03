@@ -7,12 +7,12 @@ use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class RecruitmentPostResource extends JsonResource
+class RecruitmentPostForEmployeeResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
         $applied = $this->applications->first(function ($application) {
-            return $application->recreuitment_post_id === $this->id;
+            return ($application->recreuitment_post_id === $this->id and $application->user_id === auth()->user()->id);
         });
 
         $data = [
