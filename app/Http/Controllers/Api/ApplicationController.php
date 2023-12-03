@@ -28,7 +28,7 @@ class ApplicationController extends Controller
 
     public function store(Request $request)
     {
-        $result = $this->applicationService->create($request->all());
+        $result = $this->applicationService->create(array_merge($request->all(), ['user_id' => auth()->user()->id]));
 
         if ($result) {
             return response()->json($result, StatusResponse::SUCCESS);
