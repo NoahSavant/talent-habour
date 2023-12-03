@@ -29,6 +29,7 @@ class RecruitmentPostResource extends JsonResource
             'experience_requirements' => $this->experience_requirements,
             'expired_at' => $this->expired_at,
             'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at,
             'applied' => $applied === null ? false : true,
         ];
 
