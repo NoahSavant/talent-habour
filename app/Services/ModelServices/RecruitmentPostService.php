@@ -92,7 +92,7 @@ class RecruitmentPostService extends BaseService {
                 "last_name" => $post->user->last_name,
                 "image_url" => $post->user->image_url
             ],
-            "post" => $post,
+            "post" => new RecruitmentPostResource($post),
             "company" => $post->user->companyInformation
         ];
     }
