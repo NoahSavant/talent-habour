@@ -54,9 +54,7 @@ class RecruitmentPostService extends BaseService {
         $companies = $input['companies'] ?? [];
 
         $user = auth()->user();
-        $query = $this->model->with(['applications' => function ($query) use ($user) {
-                $query->where('user_id', $user?->id);
-            }, 'user'=> ['companyInformation']])->experiencesFillter($experiences)->companiesFillter($companies)->typesFillter($types)->updatedAfter($date)->search($search);
+        $query = $this->model->with(['applications', 'user'=> ['companyInformation']])->experiencesFillter($experiences)->companiesFillter($companies)->typesFillter($types)->updatedAfter($date)->search($search);
         $data = $this->getAll($input, $query);
         $data['items'] = RecruitmentPostResource::collection($data['items']);
         return $data;
@@ -71,9 +69,7 @@ class RecruitmentPostService extends BaseService {
         
         $user = auth()->user();
         $query = $this->model->with([
-            'applications' => function ($query) use ($user) {
-                $query->where('user_id', $user?->id);
-            },
+            'applications',
             'user' => [
                 'companyInformation'
             ]

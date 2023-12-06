@@ -12,7 +12,7 @@ class RecruitmentPostResource extends JsonResource
     public function toArray(Request $request): array
     {
         $applied = $this->applications->first(function ($application) {
-            return $application->recruitment_post_id === $this->id;
+            return $application->recruitment_post_id === $this->id and $application->user_id === auth()->user()?->id;
         });
 
         $data = [
@@ -31,6 +31,7 @@ class RecruitmentPostResource extends JsonResource
             'expired_at' => $this->expired_at,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
+            'number_application' => count($this->applications),
             'applied' => $applied === null ? false : true,
         ];
 
