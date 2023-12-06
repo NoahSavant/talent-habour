@@ -16,7 +16,8 @@ class EmployeeApplicationResource extends JsonResource
             'company' => $this->recruitmentPost->user->companyInformation->name,
             'salary' => $this->recruitmentPost->salary,
             'status' => $this->status,
-            'feedback' => $this->feedback
+            'feedback' => $this->feedback,
+            'file_url' => $this->file_url
         ];
     }
 }
