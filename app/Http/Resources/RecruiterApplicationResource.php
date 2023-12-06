@@ -15,7 +15,8 @@ class RecruiterApplicationResource extends JsonResource
             'user' => new UserInformation($this->user),
             'status' => $this->status,
             'feedback' => $this->feedback,
-            'file_url' => $this->file_url
+            'file_url' => $this->file_url,
+            'content' => $this->content
         ];
     }
 }
