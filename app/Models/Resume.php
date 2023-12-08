@@ -24,15 +24,21 @@ class Resume extends Model
 
     public function scopeSearch($query, $search)
     {
-        if ($search === '')
+        if ($search === '') {
             return $query;
+        }
+
         $keywords = explode(',', $search);
+
         $query->where(function ($query) use ($keywords) {
             foreach ($keywords as $keyword) {
                 $query->orWhere(function ($query) use ($keyword) {
-                    $query->where('name', 'LIKE', "%$keyword%");
+                    $keyword = mb_strtolower($keyword); // Convert keyword to lowercase
+                    $query->whereRaw('LOWER(name) LIKE ?', ["%$keyword%"]);
                 });
             }
         });
+
+        return $query;
     }
 }

@@ -29,19 +29,26 @@ class CompanyInformation extends Model
         'culture',
     ];
 
-    public function scopeSearch($query, $search) {
-        if ($search === '')
+    public function scopeSearch($query, $search)
+    {
+        if ($search === '') {
             return $query;
+        }
+
         $keywords = explode(',', $search);
+
         $query->where(function ($query) use ($keywords) {
             foreach ($keywords as $keyword) {
                 $query->orWhere(function ($query) use ($keyword) {
-                    $query->where('name', 'LIKE', "%$keyword%")
-                        ->orWhere('address', 'LIKE', "%$keyword%")
-                        ->orWhere('address_main', 'LIKE', "%$keyword%");
+                    $keyword = mb_strtolower($keyword); // Convert keyword to lowercase
+                    $query->whereRaw('LOWER(name) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('LOWER(address) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('LOWER(address_main) LIKE ?', ["%$keyword%"]);
                 });
             }
         });
+
+        return $query;
     }
 
     public function user(): BelongsTo

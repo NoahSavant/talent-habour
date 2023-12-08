@@ -75,16 +75,18 @@ class RecruitmentPost extends Model
 
     public function scopeSearch($query, $search)
     {
-        if($search === '') return $query;
+        if ($search === '')
+            return $query;
         $keywords = explode(',', $search);
         $query->where(function ($query) use ($keywords) {
             foreach ($keywords as $keyword) {
                 $query->orWhere(function ($query) use ($keyword) {
-                    $query->where('role', 'LIKE', "%$keyword%")
-                        ->orWhere('title', 'LIKE', "%$keyword%")
-                        ->orWhere('address', 'LIKE', "%$keyword%")
-                        ->orWhere('job_type', 'LIKE', "%$keyword%")
-                        ->orWhere('salary', 'LIKE', "%$keyword%");
+                    $keyword = mb_strtolower($keyword); // Convert keyword to lowercase
+                    $query->whereRaw('LOWER(role) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('LOWER(title) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('LOWER(address) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('LOWER(job_type) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('LOWER(salary) LIKE ?', ["%$keyword%"]);
                 });
             }
         });
