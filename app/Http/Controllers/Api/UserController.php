@@ -47,7 +47,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function delete(Request $request)
     {
         $result = $this->userService->delete($request->get('ids'));
 
