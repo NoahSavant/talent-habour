@@ -25,7 +25,7 @@ class ApplicationService extends BaseService {
     }
 
     public function getByPost($postId, $input) {
-        $search = $input['$search'] ?? '';
+        $search = $input['search'] ?? '';
 
         $query = $this->model->with(['user'])->where('recruitment_post_id', $postId)->search($search);
         $data = $this->getAll($input, $query);

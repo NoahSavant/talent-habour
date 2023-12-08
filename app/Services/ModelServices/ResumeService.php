@@ -11,7 +11,7 @@ class ResumeService extends BaseService {
     }
 
     public function get($input) {
-        $search = $input['$search'] ?? '';
+        $search = $input['search'] ?? '';
         $user = auth()->user();
         $query = $this->model->where('user_id', $user->id)->search($search);
         $data = $this->getAll($input, $query);

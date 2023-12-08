@@ -10,7 +10,7 @@ class CompanyInformationService extends BaseService {
     }
 
     public function getListCompanies($input) {
-        $search = $input['$search'] ?? '';
+        $search = $input['search'] ?? '';
 
         $query = $this->model->with(['user' => [
             'recruitmentPostsHiring'

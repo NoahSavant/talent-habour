@@ -40,7 +40,7 @@ class CompanyInformation extends Model
         $query->where(function ($query) use ($keywords) {
             foreach ($keywords as $keyword) {
                 $query->orWhere(function ($query) use ($keyword) {
-                    $keyword = mb_strtolower($keyword); // Convert keyword to lowercase
+                    $keyword = mb_strtolower($keyword);
                     $query->whereRaw('LOWER(name) LIKE ?', ["%$keyword%"])
                         ->orWhereRaw('LOWER(address) LIKE ?', ["%$keyword%"])
                         ->orWhereRaw('LOWER(address_main) LIKE ?', ["%$keyword%"]);
