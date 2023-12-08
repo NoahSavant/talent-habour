@@ -44,6 +44,8 @@ Route::middleware('auth:api')->group(function() {
     Route::middleware('author:' . UserRole::ADMIN)->group(function () {
         Route::controller(UserController::class)->prefix('users')->group(function () {
             Route::get('/', 'index')->name('getAllUser');
+            Route::put('/{id}', 'update')->name('updateUser');
+            Route::delete('', 'delete')->name('deleteUser');
         });
     });
 

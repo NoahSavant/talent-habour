@@ -47,9 +47,19 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $result = $this->userService->delete($request->get('ids'));
+
+        if ($result) {
+            return response()->json([
+                'message' => 'Delete user successfully',
+            ], StatusResponse::SUCCESS);
+        }
+
+        return response()->json([
+            'message' => 'Delete user fail',
+        ], StatusResponse::ERROR);
     }
 
     public function updateProfile(Request $request) {
