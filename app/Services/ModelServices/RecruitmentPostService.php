@@ -105,6 +105,6 @@ class RecruitmentPostService extends BaseService {
             $this->applicationService->delete($this->getColumn($recruitmentPost->applications));
         }
 
-        parent::delete($ids);
+        return parent::delete($ids);
     }
 }

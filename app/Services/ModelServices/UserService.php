@@ -71,6 +71,6 @@ class UserService extends BaseService {
             }
         }
 
-        parent::delete($ids);
+        return parent::delete($ids);
     }
 }
