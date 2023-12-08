@@ -8,8 +8,10 @@ use App\Http\Resources\RecruitmentPostResource;
 use App\Models\RecruitmentPost;
 
 class RecruitmentPostService extends BaseService {
-    public function __construct(RecruitmentPost $recruitmentPost) {
+    protected $applicationService;
+    public function __construct(RecruitmentPost $recruitmentPost, ApplicationService $applicationService) {
         $this->model = $recruitmentPost;
+        $this->applicationService = $applicationService;
     }
 
     public function store($input) {
@@ -94,5 +96,15 @@ class RecruitmentPostService extends BaseService {
             "post" => new RecruitmentPostForEmployeeResource($post),
             "company" => $post->user->companyInformation
         ];
+    }
+
+    public function delete($ids) {
+        $recruitmentPosts = $this->model->whereIn('id', $ids)->get();
+
+        foreach($recruitmentPosts as $recruitmentPost) {
+            $this->applicationService->delete([$this->getColumn($recruitmentPost->applications)]);
+        }
+
+        parent::delete($ids);
     }
 }

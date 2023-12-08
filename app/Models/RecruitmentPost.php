@@ -86,10 +86,4 @@ class RecruitmentPost extends Model
             }
         });
     }
-
-    public function deleteCascade()
-    {
-        $this->applications->deleteCascade();
-        $this->delete();
-    }
 }

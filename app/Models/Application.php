@@ -50,9 +50,4 @@ class Application extends Model
 
         return $query;
     }
-
-    public function deleteCascade()
-    {
-        $this->delete();
-    }
 }

@@ -18,11 +18,7 @@ class BaseService {
 
     public function delete($ids)
     {
-        $items = $this->model->whereIn('id', $ids)->get();
-
-        foreach ($items as $item) {
-            $item->deleteCascade();
-        }
+        return $this->model->destroy($ids);
     }
 
     public function getFirst($id)
@@ -66,5 +62,15 @@ class BaseService {
             }
         }
         return $data;
+    }
+
+    protected function getColumn($data, $column = 'id')
+    {
+        $items = [];
+        foreach ($data as $item) {
+            $items[] = $item->$column;
+        }
+
+        return $items;
     }
 }

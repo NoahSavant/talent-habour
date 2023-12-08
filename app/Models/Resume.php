@@ -41,9 +41,4 @@ class Resume extends Model
 
         return $query;
     }
-
-    public function deleteCascade()
-    {
-        $this->delete();
-    }
 }

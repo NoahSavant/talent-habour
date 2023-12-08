@@ -20,9 +20,4 @@ class AccountVerify extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function deleteCascade()
-    {
-        $this->delete();
-    }
 }

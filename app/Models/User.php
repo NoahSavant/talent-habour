@@ -85,16 +85,4 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(RecruitmentPost::class)->where('expired_at', '>', now());
     }
-
-    public function deleteCascade() {
-        if($this->role === UserRole::RECRUITER) {
-            $this->companyInformation->deleteCascade();
-            $this->recruitmentPosts->deleteCascade();
-        } else {
-            $this->resumes->deleteCascade();
-            $this->applications->deleteCascade();
-        }
-        $this->accountVerify->deleteCascade();
-        $this->delete();
-    }
 }
