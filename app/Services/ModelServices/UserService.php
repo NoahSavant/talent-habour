@@ -64,10 +64,10 @@ class UserService extends BaseService {
             $this->accountVerifyService->delete([$user->accountVerify->id]);
             if($user->role === UserRole::RECRUITER) {
                 $this->companyInformationService->delete([$user->companyInformation->id]);
-                $this->recruitmentPostService->delete([$this->getColumn($user->recruitmentPosts)]);
+                $this->recruitmentPostService->delete($this->getColumn($user->recruitmentPosts));
             } else {
-                $this->resumeService->delete([$this->getColumn($user->resumes)]);
-                $this->applicationService->delete([$this->getColumn($user->applications)]);
+                $this->resumeService->delete($this->getColumn($user->resumes));
+                $this->applicationService->delete($this->getColumn($user->applications));
             }
         }
 

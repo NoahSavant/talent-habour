@@ -102,7 +102,7 @@ class RecruitmentPostService extends BaseService {
         $recruitmentPosts = $this->model->whereIn('id', $ids)->get();
 
         foreach($recruitmentPosts as $recruitmentPost) {
-            $this->applicationService->delete([$this->getColumn($recruitmentPost->applications)]);
+            $this->applicationService->delete($this->getColumn($recruitmentPost->applications));
         }
 
         parent::delete($ids);
