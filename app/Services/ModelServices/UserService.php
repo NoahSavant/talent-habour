@@ -61,7 +61,6 @@ class UserService extends BaseService {
         $users = $this->model->whereIn('id', $ids)->get();
 
         foreach($users as $user) {
-            $this->accountVerifyService->delete([$user->accountVerify->id]);
             if($user->role === UserRole::RECRUITER) {
                 $this->companyInformationService->delete([$user->companyInformation->id]);
                 $this->recruitmentPostService->delete($this->getColumn($user->recruitmentPosts));
