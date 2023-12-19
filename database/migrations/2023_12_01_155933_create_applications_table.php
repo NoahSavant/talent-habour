@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('file_url')->nullable();
             $table->bigInteger('user_id')->nullable();
             $table->bigInteger('recruitment_post_id')->nullable();
-            $table->string('status')->nullable();
-            $table->string('feedback', 1000)->nullable();
+            $table->integer('status')->nullable();
+            $table->text('feedback')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

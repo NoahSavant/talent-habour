@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('web')->nullable();
             $table->string('facebook')->nullable();
             $table->string('linkedIn')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('culture')->nullable();
             $table->timestamps();
             $table->softDeletes();
