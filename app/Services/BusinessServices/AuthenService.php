@@ -73,7 +73,7 @@ class AuthenService
         );
 
         if($user->role == UserRole::RECRUITER) {
-            $this->companyInformationService->create(['user_id', $user->id]);
+            $this->companyInformationService->create(['user_id' => $user->id]);
         }
 
         $this->accountVerifyService->create([
