@@ -32,10 +32,14 @@ class AuthenService
         $this->companyInformationService = $companyInformationService;
     }
 
+    private function response($data, $status) {
+        return response()->json($data, $status);
+    }
+
     public function login($input) {
        
         if (!$token = auth()->attempt($input)) {
-            return response()->json(["message" => 'Unauthorized'], StatusResponse::UNAUTHORIZED);
+            return $this->response(["message" => 'Unauthorized'], StatusResponse::UNAUTHORIZED);
         }
 
         return $this->createNewToken($token);
@@ -44,7 +48,7 @@ class AuthenService
     public function signup($input)
     {
         if ($this->userService->isEmailExist($input['email'])) {
-            return response()->json([
+            return $this->response([
                 'message' => 'This email has been used',
             ], StatusResponse::ERROR);
         }
@@ -57,7 +61,7 @@ class AuthenService
 
         $user = $this->setUpUser($data);
 
-        return response()->json([
+        return $this->response([
             'message' => $user ? 'User successfully registered' : 'User fail registered',
             'user' => $user
         ], $user ? StatusResponse::SUCCESS : StatusResponse::ERROR);
@@ -68,7 +72,7 @@ class AuthenService
             $data
         );
 
-        if($user->role === UserRole::RECRUITER) {
+        if($user->role == UserRole::RECRUITER) {
             $this->companyInformationService->create(['user_id', $user->id]);
         }
 
@@ -112,12 +116,12 @@ class AuthenService
         $verify_code = $this->createVerify($input['email']);
 
         if(!$verify_code ) {
-            return response()->json([
+            return $this->response([
                 "message" => 'Can not find out the email'
             ], StatusResponse::ERROR);
         }
 
-        return response()->json([
+        return $this->response([
             'message'=> 'Send verify code successfully',
             'verify_code' => $verify_code,
         ], StatusResponse::SUCCESS);
@@ -125,17 +129,17 @@ class AuthenService
     public function logout()
     {
         auth()->logout();
-        return response()->json(['message' => 'User successfully signed out'], StatusResponse::SUCCESS);
+        return $this->response(['message' => 'User successfully signed out'], StatusResponse::SUCCESS);
     }
 
     public function throwAuthenError()
     {
-        return response()->json(["message" => "You need to login to access"], StatusResponse::UNAUTHORIZED);
+        return $this->response(["message" => "You need to login to access"], StatusResponse::UNAUTHORIZED);
     }
 
     public function throwAuthorError()
     {
-        return response()->json(["message" => "You do not have permission to access"], StatusResponse::UNAUTHORIZED);
+        return $this->response(["message" => "You do not have permission to access"], StatusResponse::UNAUTHORIZED);
     }
 
     public function refresh()
@@ -145,7 +149,7 @@ class AuthenService
 
     public function getUserProfile()
     {
-        return response()->json(auth()->user(), StatusResponse::SUCCESS);
+        return $this->response(auth()->user(), StatusResponse::SUCCESS);
     }
 
     protected function createNewToken($token)
@@ -153,18 +157,18 @@ class AuthenService
         $user = auth()->user();
 
         if($user->status == UserStatus::DEACTIVE) {
-            return response()->json([
+            return $this->response([
                 "message"=> "Your account is deactived"
             ], StatusResponse::DEACTIVED_ACCOUNT);
         }
 
         if ($user->status == UserStatus::BLOCK) {
-            return response()->json([
+            return $this->response([
                 "message" => "Your account is blocked"
             ], StatusResponse::BLOCKED_ACCOUNT);
         }
 
-        return response()->json([
+        return $this->response([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
@@ -191,7 +195,7 @@ class AuthenService
         $user->accountVerify->delete();
         $user->save();
 
-        return response()->json([
+        return $this->response([
             'message' => 'Activate account successfully'
         ], StatusResponse::SUCCESS);
     }
@@ -213,7 +217,7 @@ class AuthenService
         $user->accountVerify->delete();
         $user->save();
 
-        return response()->json([
+        return $this->response([
             'message' => 'Change password successfully'
         ], StatusResponse::SUCCESS);
     }
@@ -221,7 +225,7 @@ class AuthenService
     private function checkVerifyAccount($user, $verify_code)
     {
         if (!$user) {
-            return response()->json([
+            return $this->response([
                 'message' => 'Can not find user or user is already active'
             ], StatusResponse::ERROR);
         }
@@ -229,7 +233,7 @@ class AuthenService
         $accountVerify = $user->accountVerify;
 
         if (!$accountVerify or $accountVerify->overtimed_at < now() or $accountVerify->verify_code != $verify_code) {
-            return response()->json([
+            return $this->response([
                 'message' => 'Your verify code is invalid'
             ], StatusResponse::ERROR);
         }
