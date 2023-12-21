@@ -53,6 +53,7 @@ Route::middleware('auth:api')->group(function() {
 
     Route::controller(UserController::class)->prefix('users')->group(function () {
         Route::put('/update-profile', 'updateProfile')->name('updateProfile');
+        Route::put('/update-profile/{id}', 'updateUserProfile')->name('updateUserProfile');
     });
 
     Route::controller(ResumeController::class)->prefix('resumes')->group(function () {

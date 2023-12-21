@@ -73,4 +73,18 @@ class UserController extends Controller
             'message' => 'Update profile fail'
         ], StatusResponse::ERROR);
     }
+
+    public function updateUserProfile(string $id, Request $request)
+    {
+        $user = User::where('id', $id)->first();
+        $result = $this->userService->updateProfile($user, $request->all());
+
+        if ($result) {
+            return response()->json($result, StatusResponse::SUCCESS);
+        }
+
+        return response()->json([
+            'message' => 'Update profile fail'
+        ], StatusResponse::ERROR);
+    }
 }
