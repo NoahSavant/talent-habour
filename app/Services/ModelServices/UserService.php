@@ -49,7 +49,8 @@ class UserService extends BaseService {
             'date_of_birth',
             'phonenumber',
             'introduction',
-            'image_url'
+            'image_url',
+            'status'
         ]));
 
         if (!$result) return false;
