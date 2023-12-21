@@ -207,7 +207,15 @@ class AuthenService
         $verify_code = $input['verify_code'];
         $newPassword = $input['new_password'];
 
-        $user = auth()->user();
+        $accountVerify = AccountVerify::where('verify_code', $verify_code)->first();
+
+        if(!$accountVerify) {
+            return $this->response([
+                'message' => 'Can not find out this verify code'
+            ], StatusResponse::ERROR);
+        }
+
+        $user = $accountVerify->user;
 
         $result = $this->checkVerifyAccount($user, $verify_code);
 
