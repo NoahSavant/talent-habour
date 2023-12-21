@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Constants\AuthenConstant\SendCodeType;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -15,9 +16,12 @@ class VerifyCodeMail extends Mailable
 
     protected $user;
 
-    public function __construct($user)
+    protected $type;
+
+    public function __construct($user, $type)
     {
         $this->user = $user;
+        $this->type = $type;
     }
 
     public function envelope(): Envelope
@@ -34,8 +38,13 @@ class VerifyCodeMail extends Mailable
     {
         $accountVerify = $this->user->accountVerify;
 
+        $view = 'emails.active-account';
+        if($this->type === SendCodeType::SEND_CODE) {
+            $view = 'emails.send-verify-code';
+        }
+        
         return new Content(
-            view: 'emails.send-verify-code',
+            view: $view,
             with: [
                 'name' => $this->user->name,
                 'verifyCode' => $accountVerify->verify_code,

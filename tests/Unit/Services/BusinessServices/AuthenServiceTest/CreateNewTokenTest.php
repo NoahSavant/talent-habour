@@ -4,7 +4,6 @@ namespace Tests\Unit\Services\BusinessService\AuthenServiceTest;
 
 use App\Constants\AuthenConstant\StatusResponse;
 use App\Constants\UserConstant\UserStatus;
-use App\Models\Enterprise;
 use App\Models\User;
 use App\Services\BusinessServices\AuthenService;
 use Illuminate\Http\Response;
@@ -18,16 +17,10 @@ class CreateNewTokenTest extends BaseAuthenServiceTest
 
     public function testSuccess()
     {
-        $enterprise = Enterprise::create([
-            'name' => 'newEnterprise',
-        ]);
-
         $user = User::create([
-            'name' => 'name',
             'password' => '123',
             'role' => 0,
             'status' => UserStatus::ACTIVE,
-            'enterprise_id' => $enterprise->id,
         ]);
 
         $authenServiceMock = $this->getMockService(AuthenService::class, ['response']);
@@ -36,7 +29,7 @@ class CreateNewTokenTest extends BaseAuthenServiceTest
             ->method('response')
             ->willReturn(new Response(['message' => ''], StatusResponse::SUCCESS));
 
-        $response = $authenServiceMock->createNewToken('token', 'rememberToken');
+        $response = $authenServiceMock->createNewToken('rememberToken');
         $this->assertEquals(StatusResponse::SUCCESS, $response->getStatusCode());
     }
 
@@ -55,7 +48,7 @@ class CreateNewTokenTest extends BaseAuthenServiceTest
             ->method('response')
             ->willReturn(new Response(['message' => ''], StatusResponse::DEACTIVED_ACCOUNT));
 
-        $response = $authenServiceMock->createNewToken('token', 'rememberToken');
+        $response = $authenServiceMock->createNewToken('token');
         $this->assertEquals(StatusResponse::DEACTIVED_ACCOUNT, $response->getStatusCode());
     }
 
@@ -74,7 +67,7 @@ class CreateNewTokenTest extends BaseAuthenServiceTest
             ->method('response')
             ->willReturn(new Response(['message' => ''], StatusResponse::BLOCKED_ACCOUNT));
 
-        $response = $authenServiceMock->createNewToken('token', 'rememberToken');
+        $response = $authenServiceMock->createNewToken('token');
         $this->assertEquals(StatusResponse::BLOCKED_ACCOUNT, $response->getStatusCode());
     }
 }

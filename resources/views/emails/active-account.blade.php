@@ -9,13 +9,13 @@
 
 <body style="font-family: Arial, sans-serif; line-height: 1.6;">
 
-    <h2>Hello {{ $name }},</h2>
+    <h2>Hey {{ $name }},</h2>
 
-    <p>This message is from <b>TalentHabour</b></p>
+    <p>Thank you for joining <b>TalentHabour</b>! To activate your account and start exploring, please use the verify code below:</p>
 
     <p>Your verify code: <b>{{ $verifyCode }}</b></p>
 
-    <p>This code will be expired in 24 hour</p>
+    <p>Please verify your account in 24 hour</p>
 
     <p>Best Regards,<br>
     Connection helper</p>

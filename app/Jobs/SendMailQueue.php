@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Constants\AuthenConstant\SendCodeType;
 use App\Mail\VerifyCodeMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -17,14 +18,16 @@ class SendMailQueue implements ShouldQueue
 
     protected $user;
 
+    protected $type;
 
-    public function __construct($user)
+    public function __construct($user, $type=SendCodeType::ACTIVE)
     {
         $this->user = $user;
+        $this->type = $type;
     }
 
     public function handle(): void
     {
-        Mail::to($this->user->email)->send(new VerifyCodeMail($this->user));
+        Mail::to($this->user->email)->send(new VerifyCodeMail($this->user, $this->type));
     }
 }

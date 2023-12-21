@@ -23,7 +23,7 @@ return new class extends Migration
             $table->integer('gender')->nullable();
             $table->timestamp('date_of_birth')->nullable();
             $table->string('phonenumber')->nullable();
-            $table->string('introduction', 500)->nullable();
+            $table->text('introduction')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

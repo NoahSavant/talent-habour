@@ -24,15 +24,9 @@ class CreateVerifyTest extends BaseAuthenServiceTest
             'password' => 'password',
         ];
 
-        $gmailTokenServiceMock = $this->getMockService(GmailTokenService::class);
         $userServiceMock = $this->getMockService(UserService::class, ['getBy']);
-        $enterpriseServiceMock = $this->getMockService(EnterpriseService::class);
-        $connectionServiceMock = $this->getMockService(ConnectionService::class);
         $authenServiceMock = $this->getMockService(AuthenService::class, ['hash', 'sendMailQueue'], [
-            $enterpriseServiceMock,
             $userServiceMock,
-            $gmailTokenServiceMock,
-            $connectionServiceMock,
         ]);
 
         $authenServiceMock->expects($this->once())
@@ -46,10 +40,6 @@ class CreateVerifyTest extends BaseAuthenServiceTest
                 'overtimed_at' => '',
                 'deleted_at' => '',
             ]]));
-
-        $authenServiceMock->expects($this->once())
-            ->method('sendMailQueue')
-            ->willReturn('123456');
 
         $response = $authenServiceMock->createVerify($input);
         $this->assertIsString($response);

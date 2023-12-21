@@ -53,7 +53,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function accountVerify(): HasOne
     {
-        return $this->hasOne(AccountVerify::class);
+        return $this->hasOne(AccountVerify::class)->withTrashed();
     }
 
     public function resumes():HasMany

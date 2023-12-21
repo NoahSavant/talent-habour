@@ -2,6 +2,7 @@
 
 namespace App\Services\BusinessServices;
 
+use App\Constants\AuthenConstant\SendCodeType;
 use App\Constants\AuthenConstant\StatusResponse;
 use App\Constants\UserConstant\UserRole;
 use App\Constants\UserConstant\UserStatus;
@@ -94,7 +95,6 @@ class AuthenService
 
     private function createVerify($email) {
         $user = User::where('email', $email)->first();
-
         if (!$user) {
             return null; 
         }
@@ -115,15 +115,17 @@ class AuthenService
     public function sendVerify($input) {
         $verify_code = $this->createVerify($input['email']);
 
-        if(!$verify_code ) {
+        if(!$verify_code) {
             return $this->response([
                 "message" => 'Can not find out the email'
             ], StatusResponse::ERROR);
         }
 
+        $user = User::where('email', $input['email'])->first();
+        SendMailQueue::dispatch($user, SendCodeType::SEND_CODE);
+
         return $this->response([
             'message'=> 'Send verify code successfully',
-            'verify_code' => $verify_code,
         ], StatusResponse::SUCCESS);
     }
     public function logout()
