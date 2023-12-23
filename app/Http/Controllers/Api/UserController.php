@@ -11,7 +11,8 @@ class UserController extends Controller
 {
     protected $userService;
 
-    public function __construct(UserService $userService) {
+    public function __construct(UserService $userService)
+    {
         $this->userService = $userService;
     }
 
@@ -62,15 +63,16 @@ class UserController extends Controller
         ], StatusResponse::ERROR);
     }
 
-    public function updateProfile(Request $request) {
-        $result = $this->userService->updateProfile($request->all());
+    public function updateProfile(Request $request)
+    {
+        $result = $this->userService->updateProfile(auth()->user(), $request->all());
 
         if ($result) {
             return response()->json($result, StatusResponse::SUCCESS);
         }
 
         return response()->json([
-            'message' => 'Update profile fail'
+            'message' => 'Update profile fail',
         ], StatusResponse::ERROR);
     }
 
@@ -84,7 +86,7 @@ class UserController extends Controller
         }
 
         return response()->json([
-            'message' => 'Update profile fail'
+            'message' => 'Update profile fail',
         ], StatusResponse::ERROR);
     }
 }

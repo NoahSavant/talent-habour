@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Services\ModelServices;
+
 use App\Constants\UtilConstant;
 
-class BaseService {
+class BaseService
+{
     protected $model;
 
     public function create($data)
@@ -28,17 +30,18 @@ class BaseService {
 
     public function getAll($input, $query = null)
     {
-        if (!$query)
+        if (! $query) {
             $query = $this->model->query();
-        $limit = $input["limit"] ?? UtilConstant::LIMIT_RECORD;
-        $column = $input["column"] ?? UtilConstant::COLUMN_DEFAULT;
-        $order = $input["order"] ?? UtilConstant::ORDER_TYPE;
+        }
+        $limit = $input['limit'] ?? UtilConstant::LIMIT_RECORD;
+        $column = $input['column'] ?? UtilConstant::COLUMN_DEFAULT;
+        $order = $input['order'] ?? UtilConstant::ORDER_TYPE;
 
         $data = $query->orderBy($column, $order)->paginate($limit);
 
         return [
             'items' => $data->items(),
-            'pagination' => $this->getPaginationData($data)
+            'pagination' => $this->getPaginationData($data),
         ];
     }
 
@@ -54,13 +57,15 @@ class BaseService {
         return $pagination;
     }
 
-    protected function getValue($input, $params) {
+    protected function getValue($input, $params)
+    {
         $data = [];
         foreach ($params as $params) {
             if (isset($input[$params])) {
                 $data[$params] = $input[$params];
             }
         }
+
         return $data;
     }
 

@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Constants\UserConstant\UserRole;
-use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -12,7 +10,7 @@ class RecruitmentPostForEmployeeResource extends JsonResource
     public function toArray(Request $request): array
     {
         $applied = $this->applications->first(function ($application) {
-            return ($application->recruitment_post_id === $this->id and $application->user_id === auth()->user()->id);
+            return $application->recruitment_post_id === $this->id and $application->user_id === auth()->user()->id;
         });
 
         $data = [

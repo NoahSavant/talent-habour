@@ -5,12 +5,9 @@ use App\Http\Controllers\Api\ApplicationController;
 use App\Http\Controllers\Api\AuthenController;
 use App\Http\Controllers\Api\CompanyInformationController;
 use App\Http\Controllers\Api\FileController;
-use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RecruitmentPostController;
 use App\Http\Controllers\Api\ResumeController;
 use App\Http\Controllers\Api\UserController;
-use App\Models\CompanyInformation;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,8 +39,8 @@ Route::controller(CompanyInformationController::class)->prefix('companies')->gro
     Route::get('', 'getListCompanies')->name('index');
 });
 
-Route::middleware('auth:api')->group(function() {
-    Route::middleware('author:' . UserRole::ADMIN)->group(function () {
+Route::middleware('auth:api')->group(function () {
+    Route::middleware('author:'.UserRole::ADMIN)->group(function () {
         Route::controller(UserController::class)->prefix('users')->group(function () {
             Route::get('/', 'index')->name('getAllUser');
             Route::put('/update-profile/{id}', 'update')->name('updateUser');
@@ -73,7 +70,7 @@ Route::middleware('auth:api')->group(function() {
         Route::delete('', 'delete')->name('delete');
     });
 
-    Route::middleware('author:' . UserRole::RECRUITER)->group(function () {
+    Route::middleware('author:'.UserRole::RECRUITER)->group(function () {
         Route::controller(RecruitmentPostController::class)->prefix('recruitment-posts')->group(function () {
             Route::post('', 'store')->name('store');
             Route::put('/{id}', 'update')->name('update');
@@ -90,11 +87,10 @@ Route::middleware('auth:api')->group(function() {
     Route::controller(FileController::class)->group(function () {
         Route::post('/upload', 'upload');
     });
-    
+
     Route::controller(AuthenController::class)->group(function () {
         Route::name('auth.')->group(function () {
             Route::post('/logout', 'logout')->name('logout');
-            Route::post('/refresh', 'refresh')->name('refresh');
             Route::get('/user-profile', 'getUserProfile')->name('getUserProfile');
         });
     });

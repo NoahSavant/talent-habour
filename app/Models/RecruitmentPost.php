@@ -14,19 +14,19 @@ class RecruitmentPost extends Model
 
     protected $fillable = [
         'user_id',
-        'role', 
-        'title', 
-        'address', 
-        'job_type', 
-        'salary', 
-        'description', 
-        'job_requirements', 
-        'educational_requirements', 
+        'role',
+        'title',
+        'address',
+        'job_type',
+        'salary',
+        'description',
+        'job_requirements',
+        'educational_requirements',
         'experience_requirements',
         'expired_at',
     ];
 
-    public function user(): BelongsTo 
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -36,25 +36,30 @@ class RecruitmentPost extends Model
         return $this->hasMany(Application::class);
     }
 
-    public function scopeTypesFillter($query, $types) {
-        if(count($types) === 0) return $query;
+    public function scopeTypesFillter($query, $types)
+    {
+        if (count($types) === 0) {
+            return $query;
+        }
         $query = $query->where('id', '<', 0);
         foreach ($types as $type) {
-            $query->orWhere('job_type', 'LIKE', "%$type%"); 
+            $query->orWhere('job_type', 'LIKE', "%$type%");
         }
     }
 
     public function scopeCompaniesFillter($query, $companies)
     {
-        if (count($companies) === 0)
+        if (count($companies) === 0) {
             return $query;
+        }
         $query = $query->whereIn('user_id', $companies);
     }
 
     public function scopeExperiencesFillter($query, $experiences)
     {
-        if (count($experiences) === 0)
+        if (count($experiences) === 0) {
             return $query;
+        }
 
         $query = $query->where('id', '<', 0);
         foreach ($experiences as $experience) {
@@ -64,28 +69,39 @@ class RecruitmentPost extends Model
 
     public function scopeUpdatedAfter($query, $date)
     {
-        if(!$date) return $query;
+        if (! $date) {
+            return $query;
+        }
+
         return $query->where('updated_at', '>', $date);
     }
 
     public function scopeSearch($query, $search)
     {
-        if ($search === '')
+        if ($search === '') {
             return $query;
+        }
+
         $keywords = explode(',', $search);
+
         $query->where(function ($query) use ($keywords) {
             foreach ($keywords as $keyword) {
+                $keyword = $this->removeAccents(mb_strtolower($keyword));
+
                 $query->orWhere(function ($query) use ($keyword) {
-                    $keyword = $this->removeAccents(mb_strtolower($keyword));
-                    $query->whereRaw('LOWER(UNACCENT(role)) LIKE ?', ["%$keyword%"])
-                        ->orWhereRaw('LOWER(UNACCENT(title)) LIKE ?', ["%$keyword%"])
-                        ->orWhereRaw('LOWER(UNACCENT(address)) LIKE ?', ["%$keyword%"])
-                        ->orWhereRaw('LOWER(UNACCENT(job_type)) LIKE ?', ["%$keyword%"])
-                        ->orWhereRaw('LOWER(UNACCENT(salary)) LIKE ?', ["%$keyword%"]);
+                    $keyword = str_replace(' ', '%', $keyword);
+                    $query->whereRaw('UNACCENT(LOWER(role)) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('unaccent(LOWER(title)) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('unaccent(LOWER(address)) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('unaccent(LOWER(job_type)) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('unaccent(LOWER(salary)) LIKE ?', ["%$keyword%"]);
                 });
             }
         });
+
+        return $query->whereNull('recruitment_posts.deleted_at');
     }
+
 
     private function removeAccents($str)
     {

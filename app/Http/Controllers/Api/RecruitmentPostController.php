@@ -11,11 +11,12 @@ class RecruitmentPostController extends Controller
 {
     protected $recruitmentPostService;
 
-    public function __construct(RecruitmentPostService $recruitmentPostService) {
+    public function __construct(RecruitmentPostService $recruitmentPostService)
+    {
         $this->recruitmentPostService = $recruitmentPostService;
     }
 
-    public function index(Request $request) 
+    public function index(Request $request)
     {
         return response()->json($this->recruitmentPostService->getRecruitmentPosts($request->all()), StatusResponse::SUCCESS);
     }
@@ -25,7 +26,8 @@ class RecruitmentPostController extends Controller
         return response()->json($this->recruitmentPostService->getPersonalRecruitmentPosts($request->all()), StatusResponse::SUCCESS);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $result = $this->recruitmentPostService->store($request->all());
 
         if ($result) {
@@ -41,7 +43,7 @@ class RecruitmentPostController extends Controller
     {
         $result = $this->recruitmentPostService->update($id, $request->all());
 
-        if($result) {
+        if ($result) {
             return response()->json($result, StatusResponse::SUCCESS);
         }
 
@@ -50,7 +52,8 @@ class RecruitmentPostController extends Controller
         ], StatusResponse::ERROR);
     }
 
-    public function show(string $id) {
+    public function show(string $id)
+    {
         $result = $this->recruitmentPostService->show($id);
 
         if ($result) {
@@ -68,12 +71,12 @@ class RecruitmentPostController extends Controller
 
         if ($result) {
             return response()->json([
-                'message' => 'Delete comapny information successfully'
+                'message' => 'Delete comapny information successfully',
             ], StatusResponse::SUCCESS);
         }
 
         return response()->json([
-            'message' => 'Delete comapny information fail'
+            'message' => 'Delete comapny information fail',
         ], StatusResponse::ERROR);
     }
 }

@@ -10,13 +10,13 @@ class RecruiterApplicationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id, 
+            'id' => $this->id,
             'title' => $this->recruitmentPost->title,
             'user' => new UserInformation($this->user),
             'status' => $this->status,
             'feedback' => $this->feedback,
             'file_url' => $this->file_url,
-            'content' => $this->content
+            'content' => $this->content,
         ];
     }
 }

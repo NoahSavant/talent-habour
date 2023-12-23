@@ -33,7 +33,7 @@ class Resume extends Model
         $query->where(function ($query) use ($keywords) {
             foreach ($keywords as $keyword) {
                 $query->orWhere(function ($query) use ($keyword) {
-                    $keyword = $this->removeAccents(mb_strtolower($keyword)); 
+                    $keyword = $this->removeAccents(mb_strtolower($keyword));
                     $query->whereRaw('LOWER(UNACCENT(name)) LIKE ?', ["%$keyword%"]);
                 });
             }

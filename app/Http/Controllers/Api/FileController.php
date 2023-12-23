@@ -12,13 +12,13 @@ class FileController extends Controller
     public function upload(Request $request)
     {
         $result = Cloudinary::upload($request->file('file')->getRealPath(), [
-            'folder' => 'files'
+            'folder' => 'files',
         ]);
 
         $url = $result->getSecurePath();
 
         return response()->json([
-            'url' => $url
+            'url' => $url,
         ], StatusResponse::SUCCESS);
     }
 }

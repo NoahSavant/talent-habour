@@ -3,6 +3,8 @@
 namespace Tests\Unit\Services\BusinessService\AuthenServiceTest;
 
 use App\Constants\AuthenConstant\StatusResponse;
+use App\Constants\UserConstant\UserStatus;
+use App\Models\User;
 use App\Services\BusinessServices\AuthenService;
 use Illuminate\Http\Response;
 
@@ -15,20 +17,19 @@ class LoginTest extends BaseAuthenServiceTest
 
     public function testSuccess()
     {
+        $user = User::create([
+            'email' => 'email',
+            'password' => '123',
+            'role' => 0,
+            'status' => UserStatus::DEACTIVE,
+        ]);
+
         $input = [
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'remember' => true,
+            'email' => $user->email,
+            'password' => '123',
         ];
-        $authenServiceMock = $this->getMockService(AuthenService::class, ['encryptToken', 'createNewToken', 'authenCreadentials']);
 
-        $authenServiceMock->expects($this->once())
-            ->method('encryptToken')
-            ->willReturn('rememberToken');
-
-        $authenServiceMock->expects($this->once())
-            ->method('authenCreadentials')
-            ->willReturn(true);
+        $authenServiceMock = $this->getMockService(AuthenService::class, ['createNewToken']);
 
         $authenServiceMock->expects($this->once())
             ->method('createNewToken')
@@ -43,13 +44,8 @@ class LoginTest extends BaseAuthenServiceTest
         $input = [
             'email' => 'test@example.com',
             'password' => 'password',
-            'remember' => true,
         ];
-        $authenServiceMock = $this->getMockService(AuthenService::class, ['authenCreadentials', 'response']);
-
-        $authenServiceMock->expects($this->once())
-            ->method('authenCreadentials')
-            ->willReturn(false);
+        $authenServiceMock = $this->getMockService(AuthenService::class, ['response']);
 
         $authenServiceMock->expects($this->once())
             ->method('response')

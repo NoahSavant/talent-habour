@@ -3,19 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Constants\AuthenConstant\StatusResponse;
-use App\Constants\UserConstant\UserRole;
 use App\Http\Controllers\Controller;
-use App\Models\CompanyInformation;
-use App\Models\User;
 use App\Services\ModelServices\CompanyInformationService;
-use App\Services\ModelServices\UserService;
 use Illuminate\Http\Request;
 
 class CompanyInformationController extends Controller
 {
     protected $companyInformationService;
 
-    public function __construct(CompanyInformationService $companyInformationService) {
+    public function __construct(CompanyInformationService $companyInformationService)
+    {
         $this->companyInformationService = $companyInformationService;
     }
 
@@ -51,7 +48,7 @@ class CompanyInformationController extends Controller
         }
 
         return response()->json([
-            'message' => 'Update comapny information fail'
+            'message' => 'Update comapny information fail',
         ], StatusResponse::ERROR);
     }
 

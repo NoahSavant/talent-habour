@@ -9,11 +9,9 @@ use App\Constants\UserConstant\UserStatus;
 use App\Constants\UserConstant\UserVerifyTime;
 use App\Jobs\SendMailQueue;
 use App\Models\AccountVerify;
-use App\Models\Profile;
 use App\Models\User;
 use App\Services\ModelServices\AccountVerifyService;
 use App\Services\ModelServices\CompanyInformationService;
-use App\Services\ModelServices\ProfileService;
 use App\Services\ModelServices\UserService;
 use DateInterval;
 use DateTime;
@@ -27,20 +25,33 @@ class AuthenService
 
     protected $companyInformationService;
 
-    public function __construct(UserService $userService, AccountVerifyService $accountVerifyService, CompanyInformationService $companyInformationService) {
+    public function __construct(UserService $userService, AccountVerifyService $accountVerifyService, CompanyInformationService $companyInformationService)
+    {
         $this->userService = $userService;
         $this->accountVerifyService = $accountVerifyService;
         $this->companyInformationService = $companyInformationService;
     }
 
-    private function response($data, $status) {
+    public function response($data, $status)
+    {
         return response()->json($data, $status);
     }
 
-    public function login($input) {
-       
-        if (!$token = auth()->attempt($input)) {
-            return $this->response(["message" => 'Unauthorized'], StatusResponse::UNAUTHORIZED);
+    public function sendMailQueue($user, $type = SendCodeType::ACTIVE)
+    {
+        SendMailQueue::dispatch($user, $type);
+    }
+
+    public function hash($data)
+    {
+        return Hash::make($data);
+    }
+
+    public function login($input)
+    {
+
+        if (! $token = auth()->attempt($input)) {
+            return $this->response(['message' => 'Unauthorized'], StatusResponse::UNAUTHORIZED);
         }
 
         return $this->createNewToken($token);
@@ -56,7 +67,7 @@ class AuthenService
 
         $data = array_merge(
             $input,
-            ['password' => Hash::make($input['password'])],
+            ['password' => $this->hash($input['password'])],
             ['status' => UserStatus::DEACTIVE]
         );
 
@@ -64,39 +75,43 @@ class AuthenService
 
         return $this->response([
             'message' => $user ? 'User successfully registered' : 'User fail registered',
-            'user' => $user
+            'user' => $user,
         ], $user ? StatusResponse::SUCCESS : StatusResponse::ERROR);
     }
 
-    private function setUpUser($data) {
+    public function setUpUser($data)
+    {
         $user = User::create(
             $data
         );
 
-        if($user->role == UserRole::RECRUITER) {
+        if ($user->role == UserRole::RECRUITER) {
             $this->companyInformationService->create(['user_id' => $user->id]);
         }
 
         $this->accountVerifyService->create([
-            'user_id'=> $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->createVerify($user->email);
 
-        SendMailQueue::dispatch($user);
+        $this->sendMailQueue($user);
 
         return $user;
     }
 
-    private function generateEncodedString($startTime, $endTime, $userData) {
-        $dataToEncode = $startTime . '|' . $endTime . '|' . $userData;
-        return Hash::make($dataToEncode);
+    public function generateEncodedString($startTime, $endTime, $userData)
+    {
+        $dataToEncode = $startTime.'|'.$endTime.'|'.$userData;
+
+        return $this->hash($dataToEncode);
     }
 
-    private function createVerify($email) {
+    public function createVerify($email)
+    {
         $user = User::where('email', $email)->first();
-        if (!$user) {
-            return null; 
+        if (! $user) {
+            return null;
         }
 
         $currentDateTime = new DateTime();
@@ -112,41 +127,39 @@ class AuthenService
         return $verify->verify_code;
     }
 
-    public function sendVerify($input) {
+    public function sendVerify($input)
+    {
         $verify_code = $this->createVerify($input['email']);
 
-        if(!$verify_code) {
+        if (! $verify_code) {
             return $this->response([
-                "message" => 'Can not find out the email'
+                'message' => 'Can not find out the email',
             ], StatusResponse::ERROR);
         }
 
         $user = User::where('email', $input['email'])->first();
-        SendMailQueue::dispatch($user, SendCodeType::SEND_CODE);
+        $this->sendMailQueue($user, SendCodeType::SEND_CODE);
 
         return $this->response([
-            'message'=> 'Send verify code successfully',
+            'message' => 'Send verify code successfully',
         ], StatusResponse::SUCCESS);
     }
+
     public function logout()
     {
         auth()->logout();
+
         return $this->response(['message' => 'User successfully signed out'], StatusResponse::SUCCESS);
     }
 
     public function throwAuthenError()
     {
-        return $this->response(["message" => "You need to login to access"], StatusResponse::UNAUTHORIZED);
+        return $this->response(['message' => 'You need to login to access'], StatusResponse::UNAUTHORIZED);
     }
 
     public function throwAuthorError()
     {
-        return $this->response(["message" => "You do not have permission to access"], StatusResponse::UNAUTHORIZED);
-    }
-
-    public function refresh()
-    {
-        return $this->createNewToken(auth()->refresh());
+        return $this->response(['message' => 'You do not have permission to access'], StatusResponse::UNAUTHORIZED);
     }
 
     public function getUserProfile()
@@ -154,19 +167,19 @@ class AuthenService
         return $this->response(auth()->user(), StatusResponse::SUCCESS);
     }
 
-    protected function createNewToken($token)
+    public function createNewToken($token)
     {
         $user = auth()->user();
 
-        if($user->status == UserStatus::DEACTIVE) {
+        if ($user->status == UserStatus::DEACTIVE) {
             return $this->response([
-                "message"=> "Your account is deactived"
+                'message' => 'Your account is deactived',
             ], StatusResponse::DEACTIVED_ACCOUNT);
         }
 
         if ($user->status == UserStatus::BLOCK) {
             return $this->response([
-                "message" => "Your account is blocked"
+                'message' => 'Your account is blocked',
             ], StatusResponse::BLOCKED_ACCOUNT);
         }
 
@@ -174,7 +187,7 @@ class AuthenService
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' => auth()->user(),
         ], StatusResponse::SUCCESS);
     }
 
@@ -188,7 +201,7 @@ class AuthenService
             ->first();
 
         $result = $this->checkVerifyAccount($user, $verify_code);
-        
+
         if ($result) {
             return $result;
         }
@@ -198,7 +211,7 @@ class AuthenService
         $user->save();
 
         return $this->response([
-            'message' => 'Activate account successfully'
+            'message' => 'Activate account successfully',
         ], StatusResponse::SUCCESS);
     }
 
@@ -209,9 +222,9 @@ class AuthenService
 
         $accountVerify = AccountVerify::where('verify_code', $verify_code)->first();
 
-        if(!$accountVerify) {
+        if (! $accountVerify) {
             return $this->response([
-                'message' => 'Can not find out this verify code'
+                'message' => 'Can not find out this verify code',
             ], StatusResponse::ERROR);
         }
 
@@ -228,23 +241,23 @@ class AuthenService
         $user->save();
 
         return $this->response([
-            'message' => 'Change password successfully'
+            'message' => 'Change password successfully',
         ], StatusResponse::SUCCESS);
     }
 
-    private function checkVerifyAccount($user, $verify_code)
+    public function checkVerifyAccount($user, $verify_code)
     {
-        if (!$user) {
+        if (! $user) {
             return $this->response([
-                'message' => 'Can not find user or user is already active'
+                'message' => 'Can not find user or user is already active',
             ], StatusResponse::ERROR);
         }
 
         $accountVerify = $user->accountVerify;
 
-        if (!$accountVerify or $accountVerify->overtimed_at < now() or $accountVerify->verify_code != $verify_code) {
+        if (! $accountVerify or $accountVerify->overtimed_at < now() or $accountVerify->verify_code != $verify_code) {
             return $this->response([
-                'message' => 'Your verify code is invalid'
+                'message' => 'Your verify code is invalid',
             ], StatusResponse::ERROR);
         }
 

@@ -10,7 +10,7 @@ class EmployeeApplicationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id, 
+            'id' => $this->id,
             'title' => $this->recruitmentPost->title,
             'logo_url' => $this->recruitmentPost->user->companyInformation->logo_url,
             'company' => $this->recruitmentPost->user->companyInformation->name,
@@ -18,7 +18,7 @@ class EmployeeApplicationResource extends JsonResource
             'status' => $this->status,
             'feedback' => $this->feedback,
             'file_url' => $this->file_url,
-            'content' => $this->content
+            'content' => $this->content,
         ];
     }
 }

@@ -18,6 +18,7 @@ class CreateNewTokenTest extends BaseAuthenServiceTest
     public function testSuccess()
     {
         $user = User::create([
+            'email' => 'email',
             'password' => '123',
             'role' => 0,
             'status' => UserStatus::ACTIVE,
@@ -36,7 +37,7 @@ class CreateNewTokenTest extends BaseAuthenServiceTest
     public function testDeactive()
     {
         $user = User::create([
-            'name' => 'name',
+            'email' => 'email',
             'password' => '123',
             'role' => 0,
             'status' => UserStatus::DEACTIVE,
@@ -55,10 +56,10 @@ class CreateNewTokenTest extends BaseAuthenServiceTest
     public function testBlock()
     {
         $user = User::create([
-            'name' => 'name',
+            'email' => 'email',
             'password' => '123',
             'role' => 0,
-            'status' => UserStatus::DEACTIVE,
+            'status' => UserStatus::BLOCK,
         ]);
 
         $authenServiceMock = $this->getMockService(AuthenService::class, ['response']);

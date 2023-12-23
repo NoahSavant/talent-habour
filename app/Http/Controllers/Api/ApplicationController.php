@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Constants\AuthenConstant\StatusResponse;
-use App\Constants\UserConstant\UserRole;
 use App\Http\Controllers\Controller;
 use App\Services\ModelServices\ApplicationService;
 use Illuminate\Http\Request;
@@ -22,7 +21,8 @@ class ApplicationController extends Controller
         return response()->json($this->applicationService->get($request->all()), StatusResponse::SUCCESS);
     }
 
-    public function getByPost(string $id, Request $request) {
+    public function getByPost(string $id, Request $request)
+    {
         return response()->json($this->applicationService->getByPost($id, $request->all()), StatusResponse::SUCCESS);
     }
 

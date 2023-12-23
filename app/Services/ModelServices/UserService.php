@@ -1,20 +1,25 @@
-<?php 
+<?php
 
 namespace App\Services\ModelServices;
+
 use App\Constants\UserConstant\UserRole;
 use App\Constants\UserConstant\UserStatus;
 use App\Models\User;
 
-class UserService extends BaseService {
-
+class UserService extends BaseService
+{
     protected $accountVerifyService;
+
     protected $applicationService;
+
     protected $companyInformationService;
+
     protected $recruitmentPostService;
+
     protected $resumeService;
 
     public function __construct(
-        User $user, 
+        User $user,
         AccountVerifyService $accountVerifyService,
         ApplicationService $applicationService,
         CompanyInformationService $companyInformationService,
@@ -29,8 +34,10 @@ class UserService extends BaseService {
         $this->resumeService = $resumeService;
     }
 
-    public function getAllUser() {
+    public function getAllUser()
+    {
         $users = User::whereNot('role', UserRole::ADMIN)->get();
+
         return $users;
     }
 
@@ -41,7 +48,9 @@ class UserService extends BaseService {
 
     public function updateProfile($user, $input)
     {
-        if(!$user) return false;
+        if (! $user) {
+            return false;
+        }
         $result = $user->update($this->getValue($input, [
             'first_name',
             'last_name',
@@ -50,19 +59,18 @@ class UserService extends BaseService {
             'phonenumber',
             'introduction',
             'image_url',
-            'status'
+            'status',
         ]));
 
-        if (!$result) return false;
-        
         return $user;
     }
 
-    public function delete($ids) {
+    public function delete($ids)
+    {
         $users = $this->model->whereIn('id', $ids)->get();
 
-        foreach($users as $user) {
-            if($user->role === UserRole::RECRUITER) {
+        foreach ($users as $user) {
+            if ($user->role === UserRole::RECRUITER) {
                 $this->companyInformationService->delete([$user->companyInformation->id]);
                 $this->recruitmentPostService->delete($this->getColumn($user->recruitmentPosts));
             } else {

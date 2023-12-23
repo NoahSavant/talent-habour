@@ -9,5 +9,4 @@ class UtilConstant extends BaseConstant
     const COLUMN_DEFAULT = 'id';
 
     const ORDER_TYPE = 'asc';
-
 }

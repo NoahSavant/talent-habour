@@ -3,6 +3,8 @@
 namespace Tests\Unit\Services\BusinessService\AuthenServiceTest;
 
 use App\Constants\AuthenConstant\StatusResponse;
+use App\Constants\UserConstant\UserStatus;
+use App\Models\User;
 use App\Services\BusinessServices\AuthenService;
 use Illuminate\Http\Response;
 
@@ -15,18 +17,26 @@ class SendVerifyTest extends BaseAuthenServiceTest
 
     public function testSuccess()
     {
+        $user = User::create([
+            'email' => 'email',
+            'password' => '123',
+            'role' => 0,
+            'status' => UserStatus::DEACTIVE,
+        ]);
+
         $input = [
-            'gmail_token' => ['id_token' => 'data', 'expires_in' => 123],
-            'enterprise' => 'new enterprise',
-            'email' => 'name',
-            'password' => 'password',
+            'email' => $user->email,
         ];
 
-        $authenServiceMock = $this->getMockService(AuthenService::class, ['createVerify', 'response']);
+        $authenServiceMock = $this->getMockService(AuthenService::class, ['createVerify', 'response', 'sendMailQueue']);
 
         $authenServiceMock->expects($this->once())
             ->method('response')
-            ->willReturn(new Response(['message' => 'fail'], StatusResponse::SUCCESS));
+            ->willReturn(new Response(['message' => 'success'], StatusResponse::SUCCESS));
+
+        $authenServiceMock->expects($this->once())
+            ->method('sendMailQueue')
+            ->willReturn(true);
 
         $authenServiceMock->expects($this->once())
             ->method('createVerify')
@@ -39,23 +49,20 @@ class SendVerifyTest extends BaseAuthenServiceTest
     public function testFail()
     {
         $input = [
-            'gmail_token' => ['id_token' => 'data', 'expires_in' => 123],
-            'enterprise' => 'new enterprise',
             'email' => 'name',
-            'password' => 'password',
         ];
 
         $authenServiceMock = $this->getMockService(AuthenService::class, ['createVerify', 'response']);
 
         $authenServiceMock->expects($this->once())
             ->method('response')
-            ->willReturn(new Response(['message' => 'fail'], StatusResponse::SUCCESS));
+            ->willReturn(new Response(['message' => 'fail'], StatusResponse::ERROR));
 
         $authenServiceMock->expects($this->once())
             ->method('createVerify')
             ->willReturn(false);
 
         $response = $authenServiceMock->sendVerify($input);
-        $this->assertEquals(StatusResponse::SUCCESS, $response->getStatusCode());
+        $this->assertEquals(StatusResponse::ERROR, $response->getStatusCode());
     }
 }

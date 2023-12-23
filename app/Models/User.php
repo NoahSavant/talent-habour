@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Constants\UserConstant\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -28,7 +27,7 @@ class User extends Authenticatable implements JWTSubject
         'date_of_birth',
         'phonenumber',
         'introduction',
-        'image_url'
+        'image_url',
     ];
 
     protected $hidden = [
@@ -56,19 +55,19 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(AccountVerify::class)->withTrashed();
     }
 
-    public function resumes():HasMany
+    public function resumes(): HasMany
     {
         return $this->hasMany(Resume::class);
     }
 
-    public function applications():HasMany
+    public function applications(): HasMany
     {
         return $this->hasMany(Application::class);
     }
 
-    public function fullname(): string 
+    public function fullname(): string
     {
-        return $this->firstname .' '. $this->lastname;
+        return $this->firstname.' '.$this->lastname;
     }
 
     public function companyInformation(): HasOne
@@ -81,7 +80,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(RecruitmentPost::class);
     }
 
-    public function recruitmentPostsHiring(): HasMany 
+    public function recruitmentPostsHiring(): HasMany
     {
         return $this->hasMany(RecruitmentPost::class)->where('expired_at', '>', now());
     }

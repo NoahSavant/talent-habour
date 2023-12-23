@@ -17,6 +17,7 @@ class GetUserProfileTest extends BaseAuthenServiceTest
     public function testSuccess()
     {
         $user = User::create([
+            'email' => 'email',
             'name' => 'name',
             'password' => '123',
             'role' => 0,

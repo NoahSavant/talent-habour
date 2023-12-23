@@ -1,22 +1,25 @@
-<?php 
+<?php
 
 namespace App\Services\ModelServices;
-use App\Constants\UserConstant\UserRole;
-use App\Constants\UserConstant\UserStatus;
+
 use App\Http\Resources\RecruitmentPostForEmployeeResource;
 use App\Http\Resources\RecruitmentPostResource;
 use App\Models\RecruitmentPost;
 
-class RecruitmentPostService extends BaseService {
+class RecruitmentPostService extends BaseService
+{
     protected $applicationService;
-    public function __construct(RecruitmentPost $recruitmentPost, ApplicationService $applicationService) {
+
+    public function __construct(RecruitmentPost $recruitmentPost, ApplicationService $applicationService)
+    {
         $this->model = $recruitmentPost;
         $this->applicationService = $applicationService;
     }
 
-    public function store($input) {
+    public function store($input)
+    {
         $result = $this->create(array_merge($input, [
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
         ]));
 
         return $result;
@@ -26,7 +29,9 @@ class RecruitmentPostService extends BaseService {
     {
         $recruitmentPost = $this->model->where('id', $id)->where('user_id', auth()->user()->id)->first();
 
-        if(!$recruitmentPost) return false;
+        if (! $recruitmentPost) {
+            return false;
+        }
 
         $result = $recruitmentPost->update($this->getValue($input, [
             'role',
@@ -41,67 +46,70 @@ class RecruitmentPostService extends BaseService {
             'expired_at',
         ]));
 
-        if (!$result)
-            return false;
-
         return $recruitmentPost;
     }
 
     public function getRecruitmentPosts($input)
     {
-        $types = $input["types"] ?? [];
-        $experiences = $input["experiences"] ?? [];
+        $types = $input['types'] ?? [];
+        $experiences = $input['experiences'] ?? [];
         $date = $input['date'] ?? null;
         $search = $input['search'] ?? '';
         $companies = $input['companies'] ?? [];
 
         $user = auth()->user();
-        $query = $this->model->with(['applications', 'user'=> ['companyInformation']])->experiencesFillter($experiences)->companiesFillter($companies)->typesFillter($types)->updatedAfter($date)->search($search);
+        $query = $this->model->with(['applications', 'user' => ['companyInformation']])->experiencesFillter($experiences)->companiesFillter($companies)->typesFillter($types)->updatedAfter($date)->search($search);
         $data = $this->getAll($input, $query);
         $data['items'] = RecruitmentPostResource::collection($data['items']);
+
         return $data;
     }
 
     public function getPersonalRecruitmentPosts($input)
     {
-        $types = $input["types"] ?? [];
-        $experiences = $input["experiences"] ?? [];
+        $types = $input['types'] ?? [];
+        $experiences = $input['experiences'] ?? [];
         $date = $input['date'] ?? null;
         $search = $input['search'] ?? '';
-        
+
         $user = auth()->user();
         $query = $this->model->with([
             'applications',
             'user' => [
-                'companyInformation'
-            ]
+                'companyInformation',
+            ],
         ])->where('user_id', $user->id)->experiencesFillter($experiences)->typesFillter($types)->updatedAfter($date)->search($search);
         $data = $this->getAll($input, $query);
         $data['items'] = RecruitmentPostResource::collection($data['items']);
+
         return $data;
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $post = $this->model->where('id', $id)->first();
 
-        if(!$post) return false;
+        if (! $post) {
+            return false;
+        }
 
         return [
             'user' => [
-                "id" => $post->user->id,
-                "first_name" => $post->user->first_name,
-                "last_name" => $post->user->last_name,
-                "image_url" => $post->user->image_url
+                'id' => $post->user->id,
+                'first_name' => $post->user->first_name,
+                'last_name' => $post->user->last_name,
+                'image_url' => $post->user->image_url,
             ],
-            "post" => new RecruitmentPostForEmployeeResource($post),
-            "company" => $post->user->companyInformation
+            'post' => new RecruitmentPostForEmployeeResource($post),
+            'company' => $post->user->companyInformation,
         ];
     }
 
-    public function delete($ids) {
+    public function delete($ids)
+    {
         $recruitmentPosts = $this->model->whereIn('id', $ids)->get();
 
-        foreach($recruitmentPosts as $recruitmentPost) {
+        foreach ($recruitmentPosts as $recruitmentPost) {
             $this->applicationService->delete($this->getColumn($recruitmentPost->applications));
         }
 

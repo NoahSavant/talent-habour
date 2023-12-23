@@ -2,10 +2,12 @@
 
 namespace Tests\Unit\Services\BusinessService\AuthenServiceTest;
 
+use App\Constants\UserConstant\UserStatus;
+use App\Models\AccountVerify;
+use App\Models\User;
 use App\Services\BusinessServices\AuthenService;
-use App\Services\ModelServices\ConnectionService;
-use App\Services\ModelServices\EnterpriseService;
-use App\Services\ModelServices\GmailTokenService;
+use App\Services\ModelServices\AccountVerifyService;
+use App\Services\ModelServices\CompanyInformationService;
 use App\Services\ModelServices\UserService;
 
 class CreateVerifyTest extends BaseAuthenServiceTest
@@ -17,59 +19,48 @@ class CreateVerifyTest extends BaseAuthenServiceTest
 
     public function testSuccess()
     {
-        $input = [
-            'gmail_token' => ['id_token' => 'data', 'expires_in' => 123],
-            'enterprise' => 'new enterprise',
-            'name' => 'name',
-            'password' => 'password',
-        ];
+        $user = User::create([
+            'email' => 'email',
+            'password' => '123',
+            'role' => 0,
+            'status' => UserStatus::DEACTIVE,
+        ]);
 
-        $userServiceMock = $this->getMockService(UserService::class, ['getBy']);
-        $authenServiceMock = $this->getMockService(AuthenService::class, ['hash', 'sendMailQueue'], [
+        AccountVerify::create([
+            'user_id' => $user->id,
+        ]);
+
+        $userServiceMock = $this->getMockService(UserService::class);
+        $accountVerifyServiceMock = $this->getMockService(AccountVerifyService::class);
+        $companyInformationServiceMock = $this->getMockService(CompanyInformationService::class);
+
+        $authenServiceMock = $this->getMockService(AuthenService::class, ['hash'], [
             $userServiceMock,
+            $accountVerifyServiceMock,
+            $companyInformationServiceMock,
         ]);
 
         $authenServiceMock->expects($this->once())
             ->method('hash')
             ->willReturn('123456');
 
-        $userServiceMock->expects($this->once())
-            ->method('getBy')
-            ->willReturn($this->getObject(['account_verify' => [
-                'verify_code' => '',
-                'overtimed_at' => '',
-                'deleted_at' => '',
-            ]]));
-
-        $response = $authenServiceMock->createVerify($input);
+        $response = $authenServiceMock->createVerify($user->email);
         $this->assertIsString($response);
     }
 
     public function testFail()
     {
-        $input = [
-            'gmail_token' => ['id_token' => 'data', 'expires_in' => 123],
-            'enterprise' => 'new enterprise',
-            'name' => 'name',
-            'password' => 'password',
-        ];
+        $userServiceMock = $this->getMockService(UserService::class);
+        $accountVerifyServiceMock = $this->getMockService(AccountVerifyService::class);
+        $companyInformationServiceMock = $this->getMockService(CompanyInformationService::class);
 
-        $gmailTokenServiceMock = $this->getMockService(GmailTokenService::class);
-        $userServiceMock = $this->getMockService(UserService::class, ['getBy']);
-        $enterpriseServiceMock = $this->getMockService(EnterpriseService::class);
-        $connectionServiceMock = $this->getMockService(ConnectionService::class);
         $authenServiceMock = $this->getMockService(AuthenService::class, [], [
-            $enterpriseServiceMock,
             $userServiceMock,
-            $gmailTokenServiceMock,
-            $connectionServiceMock,
+            $accountVerifyServiceMock,
+            $companyInformationServiceMock,
         ]);
 
-        $userServiceMock->expects($this->once())
-            ->method('getBy')
-            ->willReturn(false);
-
-        $response = $authenServiceMock->createVerify($input);
+        $response = $authenServiceMock->createVerify('email');
         $this->assertNull($response);
     }
 }

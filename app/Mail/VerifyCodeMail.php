@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Constants\AuthenConstant\SendCodeType;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -39,10 +38,10 @@ class VerifyCodeMail extends Mailable
         $accountVerify = $this->user->accountVerify;
 
         $view = 'emails.active-account';
-        if($this->type === SendCodeType::SEND_CODE) {
+        if ($this->type === SendCodeType::SEND_CODE) {
             $view = 'emails.send-verify-code';
         }
-        
+
         return new Content(
             view: $view,
             with: [

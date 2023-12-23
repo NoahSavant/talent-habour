@@ -11,17 +11,20 @@ class ResumeController extends Controller
 {
     protected $resumeService;
 
-    public function __construct(ResumeService $resumeService) {
+    public function __construct(ResumeService $resumeService)
+    {
         $this->resumeService = $resumeService;
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         return response()->json($this->resumeService->get($request->all()), StatusResponse::SUCCESS);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $result = $this->resumeService->create(array_merge($request->all(), [
-            'user_id' => auth()->user()->id
+            'user_id' => auth()->user()->id,
         ]));
 
         if ($result) {
@@ -33,7 +36,8 @@ class ResumeController extends Controller
         ], StatusResponse::ERROR);
     }
 
-    public function show(string $id) {
+    public function show(string $id)
+    {
         $result = $this->resumeService->show($id);
 
         if ($result) {
@@ -45,7 +49,8 @@ class ResumeController extends Controller
         ], StatusResponse::ERROR);
     }
 
-    public function update(string $id, Request $request) {
+    public function update(string $id, Request $request)
+    {
         $result = $this->resumeService->update($id, $request->all());
 
         if ($result) {
@@ -57,7 +62,8 @@ class ResumeController extends Controller
         ], StatusResponse::ERROR);
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         $result = $this->resumeService->delete($request->get('ids'));
 
         if ($result) {
