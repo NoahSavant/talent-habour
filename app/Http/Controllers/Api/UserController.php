@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Constants\AuthenConstant\StatusResponse;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\ModelServices\UserService;
 use Illuminate\Http\Request;
 
