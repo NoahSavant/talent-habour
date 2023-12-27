@@ -12,7 +12,7 @@ class StatusResponse extends BaseConstant
 
     const ERROR = 500;
 
-    const DEACTIVED_ACCOUNT = 451;
+    const DEACTIVED_ACCOUNT = 403;
 
     const BLOCKED_ACCOUNT = 451;
 

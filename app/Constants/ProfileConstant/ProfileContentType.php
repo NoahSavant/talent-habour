@@ -11,5 +11,4 @@ class ProfileContentType extends BaseConstant
     const IMAGE = 1;
 
     const LINK = 2;
-
 }

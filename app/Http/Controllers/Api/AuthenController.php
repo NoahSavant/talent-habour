@@ -9,7 +9,6 @@ use App\Http\Requests\AuthenFormRequests\SendVerifyFormRequest;
 use App\Http\Requests\AuthenFormRequests\SignUpFormRequest;
 use App\Http\Requests\AuthenFormRequests\VerifyAccountFormRequest;
 use App\Services\BusinessServices\AuthenService;
-use Illuminate\Http\Request;
 
 class AuthenController extends Controller
 {
@@ -17,7 +16,7 @@ class AuthenController extends Controller
 
     public function __construct(AuthenService $authenService)
     {
-        $this->authenService = $authenService; 
+        $this->authenService = $authenService;
     }
 
     public function login(LoginFormRequest $request)
@@ -32,7 +31,7 @@ class AuthenController extends Controller
 
     public function logout()
     {
-        return $this->authenService->logout();  
+        return $this->authenService->logout();
     }
 
     public function throwAuthenError()
@@ -43,11 +42,6 @@ class AuthenController extends Controller
     public function throwAuthorError()
     {
         return $this->authenService->throwAuthorError();
-    }
-
-    public function refresh()
-    {
-        return $this->authenService->refresh();
     }
 
     public function getUserProfile()
@@ -65,11 +59,13 @@ class AuthenController extends Controller
         return $this->authenService->resetPassWord($request->all());
     }
 
-    public function sendVerify(SendVerifyFormRequest $request) {
+    public function sendVerify(SendVerifyFormRequest $request)
+    {
         return $this->authenService->sendVerify($request->all());
     }
 
-    public function activeAccount(VerifyAccountFormRequest $request) {
+    public function activeAccount(VerifyAccountFormRequest $request)
+    {
         return $this->authenService->activeAccount($request->all());
     }
 }

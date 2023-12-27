@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for D:\daihoc\nam4\ky1\TieuLuan\talent-harbour\app\Models</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../_css/bootstrap.min.css?v=10.1.8" rel="stylesheet" type="text/css">
+  <link href="../_css/nv.d3.min.css?v=10.1.8" rel="stylesheet" type="text/css">
+  <link href="../_css/style.css?v=10.1.8" rel="stylesheet" type="text/css">
+  <link href="../_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="../index.html">D:\daihoc\nam4\ky1\TieuLuan\talent-harbour\app</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Models</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="AccountVerify.php.html#9">App\Models\AccountVerify</a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Application.php.html#10">App\Models\Application</a></td><td class="text-right">11%</td></tr>
+       <tr><td><a href="Resume.php.html#10">App\Models\Resume</a></td><td class="text-right">11%</td></tr>
+       <tr><td><a href="CompanyInformation.php.html#10">App\Models\CompanyInformation</a></td><td class="text-right">15%</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#11">App\Models\RecruitmentPost</a></td><td class="text-right">28%</td></tr>
+       <tr><td><a href="User.php.html#16">App\Models\User</a></td><td class="text-right">77%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="RecruitmentPost.php.html#11">App\Models\RecruitmentPost</a></td><td class="text-right">109</td></tr>
+       <tr><td><a href="Application.php.html#10">App\Models\Application</a></td><td class="text-right">31</td></tr>
+       <tr><td><a href="Resume.php.html#10">App\Models\Resume</a></td><td class="text-right">22</td></tr>
+       <tr><td><a href="CompanyInformation.php.html#10">App\Models\CompanyInformation</a></td><td class="text-right">19</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="AccountVerify.php.html#19"><abbr title="App\Models\AccountVerify::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Application.php.html#24"><abbr title="App\Models\Application::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Application.php.html#29"><abbr title="App\Models\Application::recruitmentPost">recruitmentPost</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Application.php.html#54"><abbr title="App\Models\Application::removeAccents">removeAccents</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="CompanyInformation.php.html#54"><abbr title="App\Models\CompanyInformation::removeAccents">removeAccents</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#90"><abbr title="App\Models\RecruitmentPost::removeAccents">removeAccents</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Resume.php.html#20"><abbr title="App\Models\Resume::user">user</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Resume.php.html#45"><abbr title="App\Models\Resume::removeAccents">removeAccents</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#69"><abbr title="App\Models\User::fullname">fullname</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="User.php.html#84"><abbr title="App\Models\User::recruitmentPostsHiring">recruitmentPostsHiring</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#71"><abbr title="App\Models\RecruitmentPost::scopeSearch">scopeSearch</abbr></a></td><td class="text-right">14%</td></tr>
+       <tr><td><a href="CompanyInformation.php.html#32"><abbr title="App\Models\CompanyInformation::scopeSearch">scopeSearch</abbr></a></td><td class="text-right">15%</td></tr>
+       <tr><td><a href="Application.php.html#34"><abbr title="App\Models\Application::scopeSearch">scopeSearch</abbr></a></td><td class="text-right">18%</td></tr>
+       <tr><td><a href="Resume.php.html#25"><abbr title="App\Models\Resume::scopeSearch">scopeSearch</abbr></a></td><td class="text-right">18%</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#39"><abbr title="App\Models\RecruitmentPost::scopeTypesFillter">scopeTypesFillter</abbr></a></td><td class="text-right">25%</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#54"><abbr title="App\Models\RecruitmentPost::scopeExperiencesFillter">scopeExperiencesFillter</abbr></a></td><td class="text-right">40%</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#65"><abbr title="App\Models\RecruitmentPost::scopeUpdatedAfter">scopeUpdatedAfter</abbr></a></td><td class="text-right">50%</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#47"><abbr title="App\Models\RecruitmentPost::scopeCompaniesFillter">scopeCompaniesFillter</abbr></a></td><td class="text-right">66%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="RecruitmentPost.php.html#71"><abbr title="App\Models\RecruitmentPost::scopeSearch">scopeSearch</abbr></a></td><td class="text-right">8</td></tr>
+       <tr><td><a href="CompanyInformation.php.html#32"><abbr title="App\Models\CompanyInformation::scopeSearch">scopeSearch</abbr></a></td><td class="text-right">8</td></tr>
+       <tr><td><a href="Application.php.html#34"><abbr title="App\Models\Application::scopeSearch">scopeSearch</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="Resume.php.html#25"><abbr title="App\Models\Resume::scopeSearch">scopeSearch</abbr></a></td><td class="text-right">7</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#39"><abbr title="App\Models\RecruitmentPost::scopeTypesFillter">scopeTypesFillter</abbr></a></td><td class="text-right">6</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#54"><abbr title="App\Models\RecruitmentPost::scopeExperiencesFillter">scopeExperiencesFillter</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#65"><abbr title="App\Models\RecruitmentPost::scopeUpdatedAfter">scopeUpdatedAfter</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="RecruitmentPost.php.html#47"><abbr title="App\Models\RecruitmentPost::scopeCompaniesFillter">scopeCompaniesFillter</abbr></a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 10.1.8</a> using <a href="https://www.php.net/" target="_top">PHP 8.2.4</a> and <a href="https://phpunit.de/">PHPUnit 10.4.2</a> at Fri Dec 22 12:05:08 +07 2023.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="../_js/jquery.min.js?v=10.1.8" type="text/javascript"></script>
+  <script src="../_js/d3.min.js?v=10.1.8" type="text/javascript"></script>
+  <script src="../_js/nv.d3.min.js?v=10.1.8" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([1,0,3,1,0,0,0,0,1,0,0,0], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([10,0,4,1,0,1,1,1,0,0,0,10], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[0,1,"<a href=\"AccountVerify.php.html#9\">App\\Models\\AccountVerify<\/a>"],[11.11111111111111,6,"<a href=\"Application.php.html#10\">App\\Models\\Application<\/a>"],[15.789473684210526,5,"<a href=\"CompanyInformation.php.html#10\">App\\Models\\CompanyInformation<\/a>"],[28.57142857142857,16,"<a href=\"RecruitmentPost.php.html#11\">App\\Models\\RecruitmentPost<\/a>"],[11.76470588235294,5,"<a href=\"Resume.php.html#10\">App\\Models\\Resume<\/a>"],[77.77777777777779,9,"<a href=\"User.php.html#16\">App\\Models\\User<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[0,1,"<a href=\"AccountVerify.php.html#19\">App\\Models\\AccountVerify::user<\/a>"],[0,1,"<a href=\"Application.php.html#24\">App\\Models\\Application::user<\/a>"],[0,1,"<a href=\"Application.php.html#29\">App\\Models\\Application::recruitmentPost<\/a>"],[18.181818181818183,3,"<a href=\"Application.php.html#34\">App\\Models\\Application::scopeSearch<\/a>"],[0,1,"<a href=\"Application.php.html#54\">App\\Models\\Application::removeAccents<\/a>"],[15.384615384615385,3,"<a href=\"CompanyInformation.php.html#32\">App\\Models\\CompanyInformation::scopeSearch<\/a>"],[0,1,"<a href=\"CompanyInformation.php.html#54\">App\\Models\\CompanyInformation::removeAccents<\/a>"],[100,1,"<a href=\"CompanyInformation.php.html#63\">App\\Models\\CompanyInformation::user<\/a>"],[100,1,"<a href=\"RecruitmentPost.php.html#29\">App\\Models\\RecruitmentPost::user<\/a>"],[100,1,"<a href=\"RecruitmentPost.php.html#34\">App\\Models\\RecruitmentPost::applications<\/a>"],[25,3,"<a href=\"RecruitmentPost.php.html#39\">App\\Models\\RecruitmentPost::scopeTypesFillter<\/a>"],[66.66666666666666,2,"<a href=\"RecruitmentPost.php.html#47\">App\\Models\\RecruitmentPost::scopeCompaniesFillter<\/a>"],[40,3,"<a href=\"RecruitmentPost.php.html#54\">App\\Models\\RecruitmentPost::scopeExperiencesFillter<\/a>"],[50,2,"<a href=\"RecruitmentPost.php.html#65\">App\\Models\\RecruitmentPost::scopeUpdatedAfter<\/a>"],[14.285714285714285,3,"<a href=\"RecruitmentPost.php.html#71\">App\\Models\\RecruitmentPost::scopeSearch<\/a>"],[0,1,"<a href=\"RecruitmentPost.php.html#90\">App\\Models\\RecruitmentPost::removeAccents<\/a>"],[0,1,"<a href=\"Resume.php.html#20\">App\\Models\\Resume::user<\/a>"],[18.181818181818183,3,"<a href=\"Resume.php.html#25\">App\\Models\\Resume::scopeSearch<\/a>"],[0,1,"<a href=\"Resume.php.html#45\">App\\Models\\Resume::removeAccents<\/a>"],[100,1,"<a href=\"User.php.html#44\">App\\Models\\User::getJWTIdentifier<\/a>"],[100,1,"<a href=\"User.php.html#49\">App\\Models\\User::getJWTCustomClaims<\/a>"],[100,1,"<a href=\"User.php.html#54\">App\\Models\\User::accountVerify<\/a>"],[100,1,"<a href=\"User.php.html#59\">App\\Models\\User::resumes<\/a>"],[100,1,"<a href=\"User.php.html#64\">App\\Models\\User::applications<\/a>"],[0,1,"<a href=\"User.php.html#69\">App\\Models\\User::fullname<\/a>"],[100,1,"<a href=\"User.php.html#74\">App\\Models\\User::companyInformation<\/a>"],[100,1,"<a href=\"User.php.html#79\">App\\Models\\User::recruitmentPosts<\/a>"],[0,1,"<a href=\"User.php.html#84\">App\\Models\\User::recruitmentPostsHiring<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>

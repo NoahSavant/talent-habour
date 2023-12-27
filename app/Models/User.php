@@ -17,11 +17,17 @@ class User extends Authenticatable implements JWTSubject
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'role',
         'status',
+        'gender',
+        'date_of_birth',
+        'phonenumber',
+        'introduction',
+        'image_url',
     ];
 
     protected $hidden = [
@@ -44,13 +50,38 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function account_verify(): HasOne
+    public function accountVerify(): HasOne
     {
-        return $this->hasOne(AccountVerify::class);
+        return $this->hasOne(AccountVerify::class)->withTrashed();
     }
 
-    public function profiles(): HasMany
+    public function resumes(): HasMany
     {
-        return $this->hasMany(Profile::class);
+        return $this->hasMany(Resume::class);
+    }
+
+    public function applications(): HasMany
+    {
+        return $this->hasMany(Application::class);
+    }
+
+    public function fullname(): string
+    {
+        return $this->firstname.' '.$this->lastname;
+    }
+
+    public function companyInformation(): HasOne
+    {
+        return $this->hasOne(CompanyInformation::class);
+    }
+
+    public function recruitmentPosts(): HasMany
+    {
+        return $this->hasMany(RecruitmentPost::class);
+    }
+
+    public function recruitmentPostsHiring(): HasMany
+    {
+        return $this->hasMany(RecruitmentPost::class)->where('expired_at', '>', now());
     }
 }
