@@ -15,6 +15,7 @@ class RecruitmentPost extends Model
     protected $fillable = [
         'user_id',
         'role',
+        'role_main',
         'title',
         'address',
         'job_type',
@@ -92,6 +93,7 @@ class RecruitmentPost extends Model
                     $keyword = str_replace(' ', '%', $keyword);
                     $query->whereRaw('UNACCENT(LOWER(role)) LIKE ?', ["%$keyword%"])
                         ->orWhereRaw('unaccent(LOWER(title)) LIKE ?', ["%$keyword%"])
+                        ->orWhereRaw('unaccent(LOWER(role_main)) LIKE ?', ["%$keyword%"])
                         ->orWhereRaw('unaccent(LOWER(address)) LIKE ?', ["%$keyword%"])
                         ->orWhereRaw('unaccent(LOWER(job_type)) LIKE ?', ["%$keyword%"])
                         ->orWhereRaw('unaccent(LOWER(salary)) LIKE ?', ["%$keyword%"]);
