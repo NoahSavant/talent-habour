@@ -35,6 +35,7 @@ class RecruitmentPostService extends BaseService
 
         $result = $recruitmentPost->update($this->getValue($input, [
             'role',
+            'role_main',
             'title',
             'address',
             'job_type',
